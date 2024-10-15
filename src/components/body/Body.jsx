@@ -3,6 +3,8 @@ import React from "react";
 import MainCard from "../generic-component/card/MainCard";
 import { data } from "../../dummy-data/DummyData.js";
 import { useNavigate } from "react-router";
+import GiftSlider from "../slider/Slider.jsx";
+import GiftItemSlider from "../generic-component/category-slider/CategorySlider.jsx";
 
 export const Body = () => {
   const navigate = useNavigate();
@@ -32,6 +34,8 @@ export const Body = () => {
   return (
     <div>
       <Box sx={{ background: "#f3f3f3", padding: "1rem" }}>
+        <GiftItemSlider />
+        <GiftSlider />
         <Grid container item xs={11} sm={11} md={11} lg={11} margin="auto">
           <Typography variant="h4" sx={{ margin: "2rem 0px 2rem 0px" }}>
             Categories
@@ -42,7 +46,10 @@ export const Body = () => {
             <Grid
               key={index}
               item
-              md={3}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
               sx={{ margin: "auto", padding: "0.5rem" }}
               onClick={() => handleNavigate(index)}
             >

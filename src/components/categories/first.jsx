@@ -47,7 +47,10 @@ export const First = () => {
             <Grid
               key={index}
               item
-              md={3}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
               sx={{ margin: "auto", padding: "0.5rem" }}
               // onClick={() => handleNavigate(index)}
             >

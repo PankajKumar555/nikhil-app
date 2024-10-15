@@ -29,7 +29,7 @@ const Search = styled("div")(({ theme }) => ({
   // },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  margin: "1rem auto",
+  margin: "1.5rem auto",
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -103,6 +103,15 @@ export default function Navbar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
+  const handleAdmin = () => {
+    route("/admin");
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleNavigateCart = () => {
+    route("/cart");
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -123,6 +132,7 @@ export default function Navbar() {
     >
       {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={handleLogin}>Login</MenuItem>
+      <MenuItem onClick={handleAdmin}>Admin</MenuItem>
     </Menu>
   );
 
@@ -240,6 +250,7 @@ export default function Navbar() {
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              onClick={handleNavigateCart}
             >
               <Badge badgeContent={17} color="error">
                 <ShoppingCartIcon sx={{ color: "#000" }} />

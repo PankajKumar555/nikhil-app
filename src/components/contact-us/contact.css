@@ -52,7 +52,7 @@ section {
 .contact-info-text span {
   color: #999999;
   font-size: 16px;
-  font-weight: ;
+  /* font-weight: ; */
   display: inline-block;
   width: 100%;
 }
