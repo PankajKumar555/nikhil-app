@@ -23,6 +23,9 @@ import Cart from "./components/cart/Cart";
 import { NavNotification } from "./components/generic-component/nav-notification/NavNotification";
 import AddCategory from "./components/admin/add-category/AddCategory";
 import Admin from "./components/admin/Admin";
+import ViewCategories from "./components/admin/view-category/ViewCategories";
+import ViewProducts from "./components/admin/view-products/ViewProducts";
+import AllOrders from "./components/admin/pending-order/AllOrders";
 
 // import Cart from "./components/cart/Cart";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -71,7 +74,6 @@ function App() {
       {!isAdminPage && <Footer />}
       <Routes>
         <Route path="/admin" element={<Admin />} />
-        {/* <Route path="/admin/category" element={<AddCategory />} /> */}
       </Routes>
     </div>
   );

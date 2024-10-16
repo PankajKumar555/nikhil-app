@@ -39,7 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const ViewProducts = () => {
+const AllOrders = () => {
   // Sample data
   const initialOrders = [
     {
@@ -106,7 +106,7 @@ const ViewProducts = () => {
           variant="h4"
           sx={{ margin: "1rem", color: "#808080b3", fontWeight: "bold" }}
         >
-          All Products
+          All Orders
         </Typography>
       </Grid>
       <TableContainer component={Paper}>
@@ -123,7 +123,7 @@ const ViewProducts = () => {
             component="div"
             sx={{ padding: { xs: "8px", sm: "16px" }, fontWeight: "600" }}
           >
-            All Products
+            All Orders
           </Typography>
           <Button
             variant="contained"
@@ -204,4 +204,4 @@ const ViewProducts = () => {
   );
 };
 
-export default ViewProducts;
+export default AllOrders;

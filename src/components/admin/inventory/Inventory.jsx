@@ -19,6 +19,14 @@ import CreateOrderDialog from "../recent-orders/CreateOrder";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "../generic-component/confirm-dialog/ConfirmDialog";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney"; // Total Revenue
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // Total Orders
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard"; // Total Deals
+// import TargetIcon from "@mui/icons-material/Target"; // Total Target
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,7 +47,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const ViewProducts = () => {
+const Inventory = () => {
   // Sample data
   const initialOrders = [
     {
@@ -66,6 +74,29 @@ const ViewProducts = () => {
       paymentType: "PayPal",
       status: "Pending",
     },
+  ];
+
+  const summaryData = [
+    {
+      title: "Total Products",
+      value: "1,250",
+      icon: <ShoppingBagIcon fontSize="large" />,
+    },
+    {
+      title: "In Stock",
+      value: "$25,000",
+      icon: <InventoryIcon fontSize="large" />,
+    },
+    {
+      title: "Out of Stock",
+      value: "300",
+      icon: <ProductionQuantityLimitsIcon fontSize="large" />,
+    },
+    // {
+    //   title: "Total Target",
+    //   value: "$30,000",
+    //   icon: <LocalOfferIcon fontSize="large" />,
+    // },
   ];
 
   const [orders, setOrders] = useState(initialOrders);
@@ -106,10 +137,41 @@ const ViewProducts = () => {
           variant="h4"
           sx={{ margin: "1rem", color: "#808080b3", fontWeight: "bold" }}
         >
-          All Products
+          Inventory
         </Typography>
       </Grid>
-      <TableContainer component={Paper}>
+      <Grid container xs={12} margin="auto">
+        {summaryData.map((item, index) => (
+          <Grid item xs={12} sm={12} md={4} lg={4} key={index}>
+            <Paper
+              // elevation={3}
+              style={{
+                padding: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                margin: "1rem",
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="h6"
+                  color="textSecondary"
+                  sx={{ marginBottom: "5px" }}
+                >
+                  {item.title}
+                </Typography>
+                <br />
+                <Typography variant="h4" color="green">
+                  {item.value}
+                </Typography>
+              </Box>
+              <Box sx={{ color: "green" }}>{item.icon}</Box>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+      <TableContainer component={Paper} sx={{ margin: "1rem" }}>
         <Box
           sx={{
             display: { xs: "block", sm: "flex" },
@@ -204,4 +266,4 @@ const ViewProducts = () => {
   );
 };
 
-export default ViewProducts;
+export default Inventory;

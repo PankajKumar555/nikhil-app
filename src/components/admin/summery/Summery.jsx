@@ -35,26 +35,30 @@ const Summary = () => {
     // <Card sx={{ padding: "1rem" }}>
     <Box sx={{ display: "" }}>
       {summaryData.map((item, index) => (
-        <Grid item xs={12} sm={3} md={3} key={index}>
+        <Grid item xs={12} sm={12} md={12} lg={12} key={index}>
           <Paper
             // elevation={3}
             style={{
-              //   padding: 20,
+              padding: 10,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              //   margin: "1rem",
+              margin: "1rem",
             }}
           >
             <Box>
-              <Typography variant="h6" color="textSecondary">
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                sx={{ marginBottom: "5px" }}
+              >
                 {item.title}
               </Typography>
-              <Typography variant="h4" color="primary">
+              <Typography variant="h4" color="green">
                 {item.value}
               </Typography>
             </Box>
-            <Box>{item.icon}</Box>
+            <Box sx={{ color: "green" }}>{item.icon}</Box>
           </Paper>
         </Grid>
       ))}
