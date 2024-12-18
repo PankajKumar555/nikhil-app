@@ -12,14 +12,31 @@ import {
 } from "@mui/material";
 import "./index.css";
 
-export default function Availability() {
+export default function Availability({ selectedCheckBox }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedOption, setSelectedOption] = React.useState(""); // Track which checkbox is selected
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    selectedCheckBox(null);
+    setSelectedOption(""); // Deselect all if unchecked
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    // Update the state based on the checkbox name and checked status
+    // Allow only one checkbox to be selected at a time
+    if (checked) {
+      setSelectedOption(name);
+      selectedCheckBox(name);
+      setAnchorEl(null);
+    } else {
+      setSelectedOption(""); // Deselect all if unchecked
+      setAnchorEl(null);
+    }
   };
 
   return (
@@ -75,14 +92,26 @@ export default function Availability() {
           >
             <FormControlLabel
               //   required
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  name="inStock"
+                  checked={selectedOption === "inStock"}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="In stock"
             />
           </MenuItem>
           <MenuItem>
             <FormControlLabel
               //   required
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  name="outOfStock"
+                  checked={selectedOption === "outOfStock"}
+                  onChange={handleCheckboxChange}
+                />
+              }
               label="Out of stock"
             />
           </MenuItem>

@@ -3,35 +3,35 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Box,
-  Divider,
-  FormControl,
-  Select,
-  Slider,
-  Typography,
-} from "@mui/material";
-import "./index.css";
+import { Box, Divider, FormControl, Select, Typography } from "@mui/material";
 
-export default function Price() {
+export default function Price({ minPrice, maxPrice, setPriceRange }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+    // setPriceRange((prev) => ({ ...prev, min: null, max: null }));
   };
 
-  const [value, setValue] = React.useState([20, 37]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleMinChange = (event) => {
+    const newMin = event.target.value;
+    setPriceRange((prev) => ({ ...prev, min: newMin }));
   };
 
-  function valuetext(value) {
-    return `${value}°C`;
-  }
+  const handleMaxChange = (event) => {
+    const newMax = event.target.value;
+    setPriceRange((prev) => ({ ...prev, max: newMax }));
+  };
+
+  const handleReset = () => {
+    setPriceRange({ min: null, max: null }); // Remove all filters
+    handleClose(); // Close the menu
+  };
 
   return (
     <Box
@@ -41,7 +41,6 @@ export default function Price() {
         alignItems: "center",
       }}
     >
-      {/* <Typography variant="body1">Filter :</Typography> */}
       <div>
         <Button
           id="basic-button"
@@ -69,7 +68,7 @@ export default function Price() {
         >
           <Typography
             variant="body2"
-            onClick={handleClose}
+            onClick={handleReset}
             sx={{
               textAlign: "right",
               padding: "0.5rem 1rem",
@@ -80,15 +79,6 @@ export default function Price() {
             Reset
           </Typography>
           <Divider />
-          {/* <MenuItem>
-            <Slider
-              getAriaLabel={() => "Temperature range"}
-              value={value}
-              onChange={handleChange}
-              valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
-            />
-          </MenuItem> */}
           <Box
             sx={{
               margin: "1rem auto",
@@ -99,37 +89,35 @@ export default function Price() {
           >
             <FormControl sx={{ minWidth: 120 }}>
               <Select
-                // value={age}
-                onChange={handleChange}
+                value={minPrice}
+                onChange={handleMinChange}
                 displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
+                inputProps={{ "aria-label": "Min Price" }}
               >
                 <MenuItem value="">
                   <em>Min</em>
                 </MenuItem>
                 <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={20}>100</MenuItem>
-                <MenuItem value={30}>1000</MenuItem>
-                <MenuItem value={30}>2000</MenuItem>
+                <MenuItem value={100}>100</MenuItem>
+                <MenuItem value={1000}>1000</MenuItem>
+                <MenuItem value={2000}>2000</MenuItem>
               </Select>
-              {/* <FormHelperText>Without label</FormHelperText> */}
             </FormControl>
             <FormControl sx={{ minWidth: 120 }}>
               <Select
-                // value={age}
-                onChange={handleChange}
+                value={maxPrice}
+                onChange={handleMaxChange}
                 displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
+                inputProps={{ "aria-label": "Max Price" }}
               >
                 <MenuItem value="">
                   <em>Max</em>
                 </MenuItem>
-                <MenuItem value={10}>100</MenuItem>
-                <MenuItem value={20}>1000</MenuItem>
-                <MenuItem value={30}>5000</MenuItem>
-                <MenuItem value={30}>10000</MenuItem>
+                <MenuItem value={100}>100</MenuItem>
+                <MenuItem value={1000}>1000</MenuItem>
+                <MenuItem value={5000}>5000</MenuItem>
+                <MenuItem value={10000}>10000</MenuItem>
               </Select>
-              {/* <FormHelperText>Without label</FormHelperText> */}
             </FormControl>
           </Box>
         </Menu>

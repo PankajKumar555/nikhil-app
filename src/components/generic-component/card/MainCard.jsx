@@ -29,8 +29,8 @@ export default function MainCard({ url, heading }) {
           <CardMedia
             component="img"
             height="auto"
-            image={url.url}
-            alt="green iguana"
+            image={url}
+            alt={heading}
             sx={{
               // maxWidth: 345,
               transition: "transform 0.9s ease",

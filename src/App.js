@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "./components/navbar/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 import { Body } from "./components/body/Body";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import { First } from "./components/categories/first";
 import { Product } from "./components/product/Product";
 import "./App.css";
@@ -26,6 +26,10 @@ import Admin from "./components/admin/Admin";
 import ViewCategories from "./components/admin/view-category/ViewCategories";
 import ViewProducts from "./components/admin/view-products/ViewProducts";
 import AllOrders from "./components/admin/pending-order/AllOrders";
+import { fetchData } from "./api/apiMethod";
+import { Identifier } from "./components/categories/Identifier";
+import ProfilePage from "./components/generic-component/profile/Profile";
+import ThankYouPage from "./components/cart/ThankYou";
 
 // import Cart from "./components/cart/Cart";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -35,6 +39,9 @@ function App() {
 
   // Check if the current path is one of the admin paths
   const isAdminPage = location.pathname.startsWith("/admin");
+
+  // Fetch data based on the slug when the component mounts
+
   return (
     <div className="App">
       <ScrollToTop />
@@ -42,23 +49,12 @@ function App() {
       {!isAdminPage && <NavBar />}
       <Routes>
         <Route path="/" element={<Body />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/categories">
-          <Route path="first" element={<First />} />
-          <Route path="second" element={<First />} />
-          <Route path="three" element={<First />} />
-          <Route path="four" element={<First />} />
-          <Route path="five" element={<First />} />
-          <Route path="six" element={<First />} />
-          <Route path="seven" element={<First />} />
-          <Route path="eight" element={<First />} />
-          <Route path="nine" element={<First />} />
-          <Route path="ten" element={<First />} />
-          <Route path="eleven" element={<First />} />
-          <Route path="tweleve" element={<First />} />
-        </Route>
-        <Route path="/categories/first/products" element={<Product />} />
-        <Route path="/all-collections" element={<First />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/categories/:slug" element={<First />} />
+        <Route path="/identifier/:slug" element={<Identifier />} />
+        <Route path="/categories/:slug/products/:slug" element={<Product />} />
+        <Route path="/all-products" element={<First />} />
+        <Route path="/products/productName/:slug" element={<First />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-condition" element={<TermsAndConditions />} />
@@ -70,11 +66,10 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/help" element={<Help />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/thank-you" element={<ThankYouPage />} />
       </Routes>
       {!isAdminPage && <Footer />}
-      <Routes>
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
     </div>
   );
 }

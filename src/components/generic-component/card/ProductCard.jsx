@@ -9,34 +9,51 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { currencySymbol } from "../helper-function/HelperFunction";
+import { addToCart, checkIfAvailable } from "../helper-function/cart";
 
-export default function ProductCard({ url, heading, price }) {
+export default function ProductCard({ data }) {
+  // console.log("=========", data);
   const route = useNavigate();
   const [isClicked, setIsClicked] = React.useState(false);
-  const [value, setVaue] = React.useState(1);
+  const [value, setValue] = React.useState(1);
+
+  React.useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const jsonCount = await checkIfAvailable(data?.productId);
+        // console.log("-----jsonCount", jsonCount);
+
+        if (jsonCount.count > 0) {
+          setIsClicked(true);
+          setValue(jsonCount.count);
+        } else {
+          setIsClicked(false);
+        }
+      } catch (error) {
+        console.error("Error fetching count:", error);
+      }
+    };
+
+    fetchCounts(); // Call the async function
+  }, [value]);
 
   const handleClickButton = async (e) => {
     e.stopPropagation();
-
-    // if (addOn == true) {
-    //   handleOpenViewDetailsRsOne();
-    // } else {
-    // var countJson = await addToCartService.addToCart(childId, true);
-    // if (value == 0) {
-    // setVaue(countJson.count);
-    setIsClicked(true);
-    // } else {
-    //   setIsClicked(false);
-    // }
-    // }
+    const countJson = await addToCart(data, true);
+    if (countJson?.count && countJson?.count > 0) {
+      setValue(countJson.count);
+      setIsClicked(true);
+    } else {
+      setIsClicked(false);
+    }
   };
 
   const handleValueDecrease = async (e) => {
     e.stopPropagation();
-
-    // var countJson = await addToCartService.addToCart(childId, false);
-    if (value >= 2) {
-      setVaue(value - 1);
+    const countJson = await addToCart(data, false);
+    if (countJson?.count && countJson?.count > 0) {
+      setValue(value - 1);
       setIsClicked(true);
     } else {
       setIsClicked(false);
@@ -45,10 +62,9 @@ export default function ProductCard({ url, heading, price }) {
 
   const handleValueIncrease = async (e) => {
     e.stopPropagation();
-
-    // var countJson = await addToCartService.addToCart(childId, true);
-    if (value) {
-      setVaue(value + 1);
+    const countJson = await addToCart(data, true);
+    if (countJson?.count && countJson?.count > 0) {
+      setValue(value + 1);
       setIsClicked(true);
     } else {
       setIsClicked(false);
@@ -60,14 +76,32 @@ export default function ProductCard({ url, heading, price }) {
   //   toast.success("Added to cart");
   // };
 
-  const handleNavigateToProduct = () => {
+  const handleNavigateToProduct = (data) => {
     console.log("handleNavigateToProduct");
-    route("/categories/first/products");
+    route(`/categories/${data?.productCategory}/products/${data?.productId}`);
   };
 
   return (
-    <Card sx={{ borderRadius: "10px" }}>
-      <CardActionArea>
+    <Card
+      sx={{
+        borderRadius: "10px",
+        maxHeight: "25rem",
+        height: "25rem",
+        minHeight: "25rem",
+        minWidth: "250px",
+        boxShadow: "none", // Ensure no shadow is applied
+        "&:hover": {
+          boxShadow:
+            "0px 2px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)", // Prevent hover shadow
+        },
+      }}
+    >
+      <CardActionArea
+        disableRipple
+        sx={{
+          "&:focus": { boxShadow: "none" },
+        }}
+      >
         <Box
           sx={{
             overflow: "hidden",
@@ -76,16 +110,21 @@ export default function ProductCard({ url, heading, price }) {
           <CardMedia
             component="img"
             height="auto"
-            image={url.url}
-            alt="green iguana"
+            image={
+              data?.imageList[0]?.productImgUrl ??
+              "https://images.meesho.com/images/products/102639327/ieojq_512.webp"
+            }
+            alt={data?.imageList[0]?.productImgCaption ?? ""}
             sx={{
               // maxWidth: 345,
               transition: "transform 0.9s ease",
+              height: "14rem",
+              objectFit: "contain",
               "&:hover": {
                 transform: "scale(1.05)",
               },
             }}
-            onClick={handleNavigateToProduct}
+            onClick={() => handleNavigateToProduct(data)}
           />
         </Box>
         <CardContent
@@ -93,16 +132,83 @@ export default function ProductCard({ url, heading, price }) {
             cursor: "default !important",
           }}
         >
-          <Typography variant="body2" color="text.secondary" padding="5px 0px">
-            {heading}
-          </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
-            padding="0px 0px 15px 0px"
+            margin="5px 0px"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              WebkitLineClamp: 2, // Limits to 2 lines
+              textOverflow: "ellipsis", // Adds the ellipsis ("...") at the end
+              minHeight: "3em", // Adjust to match the height of 2 lines
+              lineHeight: "1.5em",
+            }}
           >
-            {price}
+            {data?.productTitle}
           </Typography>
+          {/* <Typography variant="body2" color="text.secondary" padding="5px 0px">
+            {data?.description}
+          </Typography> */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+              margin: "5px auto",
+            }}
+          >
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                fontWeight: "bold",
+                color: "#000",
+              }}
+            >
+              {currencySymbol}&nbsp;
+              {data?.offerPrice}
+            </Typography>
+            &nbsp;&nbsp;
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                textDecoration: "line-through",
+              }}
+            >
+              {currencySymbol}&nbsp;
+              {data?.listPrice}
+            </Typography>
+            &nbsp;&nbsp;
+            <Typography
+              variant="body1"
+              color="success.main"
+              sx={{
+                fontWeight: "bold",
+              }}
+            >
+              <span style={{ fontWeight: "500" }}>Save </span> {currencySymbol}
+              &nbsp;
+              {data?.listPrice - data?.offerPrice}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              margin: "5px auto",
+            }}
+          >
+            {data?.inStock === true ? (
+              <Typography variant="body1" color="text.secondary">
+                Stock Available
+              </Typography>
+            ) : (
+              <Typography variant="body1" color="error.main">
+                Out of Stock
+              </Typography>
+            )}
+          </Box>
           <Box>
             {isClicked ? (
               <Box
@@ -149,24 +255,11 @@ export default function ProductCard({ url, heading, price }) {
                 }}
                 color="success"
                 onClick={handleClickButton}
+                disabled={data?.inStock === true ? false : true}
               >
                 Add to Cart
               </Button>
             )}
-            {/* <Button
-            variant="outlined"
-            // sx={{ color: "gray" }}
-            color="success"
-            sx={{
-              textTransform: "capitalize",
-              width: "100%",
-              borderColor: "#bdbdbd",
-              color: "black",
-            }}
-            onClick={handleProductCards}
-            >
-            Add To Cart
-          </Button> */}
           </Box>
         </CardContent>
       </CardActionArea>

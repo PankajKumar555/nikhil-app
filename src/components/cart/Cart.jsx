@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import {
-  AppBar,
   Box,
   Button,
   Card,
@@ -9,57 +7,37 @@ import {
   Container,
   Divider,
   Grid,
-  IconButton,
-  Toolbar,
   Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-
-// Sample data for products
-const dataStore = [
-  {
-    id: 1,
-    image:
-      "https://images.unsplash.com/photo-1617171594202-100a53bdfe04?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTA4NjE0MjN8&ixlib=rb-4.0.3&q=85",
-    name: "Blue Hoodie",
-    code: "Hodie-B",
-    color: "Blue",
-    size: "M",
-    price: 17.99,
-    quantity: 0,
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTA4NjE0MjN8&ixlib=rb-4.0.3&q=85",
-    name: "White Hoodie",
-    code: "Hodie-W",
-    color: "White",
-    size: "M",
-    price: 35.99,
-    quantity: 0,
-  },
-];
+import { addToCart } from "../generic-component/helper-function/cart";
+import Payment from "./Payment";
+// import Payment from "./Payment";
 
 const Cart = () => {
-  const [orders, setOrders] = useState([]);
-  const [totalOrder, setTotalOrder] = useState(0);
+  const [cart, setCart] = useState([]);
+  console.log("cart------", cart);
+  const [reloadFlag, setReloadFlag] = useState(false);
+  const [openPaymentdialog, setOpenPaymentdialog] = useState(false);
+
+  const getInitializeCart = () => {
+    const rawCart = localStorage.getItem("cart");
+    const cart = JSON.parse(rawCart);
+
+    if (!rawCart) {
+      console.log("No cart found");
+      return;
+    }
+    setCart(cart);
+    setReloadFlag(false);
+  };
 
   useEffect(() => {
-    setOrders(dataStore);
-  }, []);
-
-  useEffect(() => {
-    // Calculate total order whenever orders change
-    const total = orders.reduce(
-      (total, item) => total + item.quantity * item.price,
-      0
-    );
-    setTotalOrder(total);
-  }, [orders]);
+    getInitializeCart();
+    // setOrders(dataStore);
+  }, [reloadFlag]);
 
   const formatCurrency = (number) => {
     return number.toLocaleString("en-US", {
@@ -68,161 +46,196 @@ const Cart = () => {
     });
   };
 
-  const handleAdd = (item) => {
-    setOrders((prevOrders) => {
-      const existingOrderIndex = prevOrders.findIndex((o) => o.id === item.id);
-      if (existingOrderIndex >= 0) {
-        const updatedOrders = [...prevOrders];
-        updatedOrders[existingOrderIndex].quantity += 1;
-        return updatedOrders;
-      } else {
-        return [...prevOrders, { ...item, quantity: 1 }];
-      }
-    });
+  const handleValueDecrease = async (item) => {
+    await addToCart(item, false);
+    setReloadFlag(true);
+
+    // e.stopPropagation();
+    // const countJson = await addToCart(data, false);
+    // if (countJson?.count && countJson?.count > 0) {
+    //   setValue(value - 1);
+    //   setIsClicked(true);
+    // } else {
+    //   setIsClicked(false);
+    // }
   };
 
-  const handleRemove = (item) => {
-    setOrders((prevOrders) => prevOrders.filter((o) => o.id !== item.id));
+  const handleValueIncrease = async (item) => {
+    // e.stopPropagation();
+    await addToCart(item, true);
+    // if (countJson?.count && countJson?.count > 0) {
+    setReloadFlag(true);
+    // setIsClicked(true);
+    // } else {
+    //   setReloadFlag(false);
+    // }
   };
 
-  const handleMinus = (item) => {
-    setOrders((prevOrders) => {
-      const existingOrderIndex = prevOrders.findIndex((o) => o.id === item.id);
-      if (
-        existingOrderIndex >= 0 &&
-        prevOrders[existingOrderIndex].quantity > 1
-      ) {
-        const updatedOrders = [...prevOrders];
-        updatedOrders[existingOrderIndex].quantity -= 1;
-        return updatedOrders;
-      }
-      return prevOrders;
-    });
+  const handleDeleteProduct = (item) => {
+    // setOrders((prevOrders) => prevOrders.filter((o) => o.id !== item.id));
+    const filteredCart = cart?.filter(
+      (product) => product.productId !== item?.productId
+    );
+    // console.log("----filteredCart", filteredCart);
+    localStorage.setItem("cart", JSON.stringify(filteredCart));
+    setReloadFlag(true);
   };
+
+  const handlePayment = () => {
+    setOpenPaymentdialog(true);
+  };
+
+  // const handleMinus = (item) => {
+  //   setOrders((prevOrders) => {
+  //     const existingOrderIndex = prevOrders.findIndex((o) => o.id === item.id);
+  //     if (
+  //       existingOrderIndex >= 0 &&
+  //       prevOrders[existingOrderIndex].quantity > 1
+  //     ) {
+  //       const updatedOrders = [...prevOrders];
+  //       updatedOrders[existingOrderIndex].quantity -= 1;
+  //       return updatedOrders;
+  //     }
+  //     return prevOrders;
+  //   });
+  // };
 
   return (
     <Container>
       <Grid container spacing={3} style={{ marginTop: "20px" }}>
         <Grid item xs={12} md={8}>
           <Card>
-            <CardContent>
-              <Typography variant="h5">Cart ({orders.length} items)</Typography>
-              {orders.map((item) => (
-                // <Card key={item.id} style={{ margin: "10px 0" }}>
-                <Box key={item.id}>
-                  <CardContent
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{
-                        width: "150px",
-                        minWidth: "150px",
-                        height: "150px",
-                        marginRight: "16px",
-                        objectFit: "cover",
-                        borderRadius: "0.5rem",
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        width: "100%",
-                      }}
+            <CardContent sx={{ paddingBottom: "0px !important" }}>
+              <Typography variant="h5">Cart ({cart?.length} items)</Typography>
+              <Box
+                sx={{
+                  maxHeight: "35rem",
+                  overflow: "scroll",
+                  "&::-webkit-scrollbar": {
+                    display: "none",
+                  },
+                }}
+              >
+                {cart?.map((item, index) => (
+                  <Box key={index}>
+                    <CardContent
+                      style={{ display: "flex", alignItems: "center" }}
                     >
-                      <div
+                      <img
+                        src={item?.imageUrl}
+                        alt={item?.productTitle}
                         style={{
-                          display: "flex",
-                          // flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          width: "100px",
+                          minWidth: "100px",
+                          height: "100px",
+                          marginRight: "16px",
+                          objectFit: "cover",
+                          borderRadius: "0.5rem",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          width: "100%",
                         }}
                       >
-                        <div>
-                          <Typography variant="h5">{item.name}</Typography>
-                          <Typography color="textSecondary" variant="body1">
-                            {item.code} | {item.color} | {item.size}
-                          </Typography>
-                        </div>
                         <div
                           style={{
                             display: "flex",
+                            // flexDirection: "row",
+                            justifyContent: "space-between",
                             alignItems: "center",
-                            border: "1px solid #8080809e",
-                            justifyContent: "center",
-                            borderRadius: "4px",
                           }}
                         >
-                          <Box
-                            onClick={() => handleMinus(item)}
-                            sx={{
-                              cursor: "pointer",
+                          <div>
+                            <Typography variant="body1">
+                              {item?.productTitle}
+                            </Typography>
+                            <Typography color="textSecondary" variant="body2">
+                              {item?.sku}
+                            </Typography>
+                          </div>
+                          <div
+                            style={{
                               display: "flex",
-                              justifyContent: "center",
                               alignItems: "center",
+                              border: "1px solid #8080809e",
+                              justifyContent: "center",
+                              borderRadius: "5px",
                             }}
                           >
-                            <RemoveIcon
-                              sx={{ fontSize: "16px", margin: "8px" }}
-                            />
-                          </Box>
-                          <Typography style={{ margin: "8px 16px" }}>
-                            {item.quantity}
-                          </Typography>
-                          <Box
-                            onClick={() => handleAdd(item)}
-                            sx={{ cursor: "pointer" }}
+                            <Box
+                              onClick={() => handleValueDecrease(item)}
+                              sx={{
+                                cursor: "pointer",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <RemoveIcon
+                                sx={{ fontSize: "16px", margin: "8px" }}
+                              />
+                            </Box>
+                            <Typography style={{ margin: "8px 16px" }}>
+                              {item?.count}
+                            </Typography>
+                            <Box
+                              onClick={() => handleValueIncrease(item)}
+                              sx={{ cursor: "pointer" }}
+                            >
+                              <AddIcon
+                                sx={{ fontSize: "16px", margin: "8px" }}
+                              />
+                            </Box>
+                          </div>
+                        </div>
+                        {/* <br /> */}
+                        <div
+                          style={{
+                            // flexGrow: 1,
+                            display: "flex",
+                            // flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginTop: "0.5rem",
+                          }}
+                        >
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleDeleteProduct(item)}
+                            sx={{
+                              textTransform: "capitalize",
+                              color: "black",
+                              fontSize: "12px",
+                              border: "1px solid #8080809e",
+                              "&:hover": {
+                                border: "1px solid #8080809e",
+                                background: "#8080809e",
+                              },
+                            }}
+                            startIcon={
+                              <DeleteForeverIcon
+                                sx={{ fontSize: "16px !important" }}
+                              />
+                            }
                           >
-                            <AddIcon sx={{ fontSize: "16px", margin: "8px" }} />
+                            Remove
+                          </Button>
+                          <Box>
+                            <Typography
+                              style={{ marginLeft: "auto" }}
+                              variant="h6"
+                            >
+                              {formatCurrency(item?.unitPrice * item?.count)}
+                            </Typography>
                           </Box>
                         </div>
-                      </div>
-                      <br />
-                      <div
-                        style={{
-                          // flexGrow: 1,
-                          display: "flex",
-                          // flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Button
-                          variant="outlined"
-                          sx={{
-                            textTransform: "capitalize",
-                            color: "black",
-                            border: "1px solid #8080809e",
-                            "&:hover": {
-                              border: "1px solid #8080809e",
-                              background: "#fff",
-                            },
-                          }}
-                          startIcon={<DeleteForeverIcon />}
-                        >
-                          Remove Item
-                        </Button>
-                        <Box>
-                          <Typography
-                            style={{ marginLeft: "auto" }}
-                            variant="h5"
-                          >
-                            {formatCurrency(item.price * item.quantity)}
-                          </Typography>
-                        </Box>
-                      </div>
-                    </Box>
-                    {/* <IconButton
-                      onClick={() => handleRemove(item)}
-                      color="secondary"
-                    >
-                      <DeleteIcon />
-                    </IconButton> */}
-                  </CardContent>
-                  <Divider />
-                </Box>
-                // </Card>
-              ))}
+                      </Box>
+                    </CardContent>
+                    <Divider />
+                  </Box>
+                ))}
+              </Box>
             </CardContent>
           </Card>
         </Grid>
@@ -238,8 +251,15 @@ const Cart = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Total:</Typography>
-                <Typography>{formatCurrency(totalOrder)}</Typography>
+                <Typography>Mrp:</Typography>
+                <Typography>
+                  {formatCurrency(
+                    cart?.reduce(
+                      (sum, amount) => sum + amount.listPrice * amount.count,
+                      0
+                    )
+                  )}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -248,8 +268,19 @@ const Cart = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Total:</Typography>
-                <Typography>{formatCurrency(totalOrder)}</Typography>
+                <Typography sx={{ color: "green" }}>Discount:</Typography>
+                <Typography sx={{ color: "green" }}>
+                  {formatCurrency(
+                    cart?.reduce(
+                      (sum, amount) => sum + amount.listPrice * amount.count,
+                      0
+                    ) -
+                      cart?.reduce(
+                        (sum, amount) => sum + amount.unitPrice * amount.count,
+                        0
+                      )
+                  )}
+                </Typography>
               </Box>
               <br />
               <Divider />
@@ -261,14 +292,22 @@ const Cart = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Total:</Typography>
-                <Typography>{formatCurrency(totalOrder)}</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Total:</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  {formatCurrency(
+                    cart?.reduce(
+                      (sum, amount) => sum + amount.unitPrice * amount.count,
+                      0
+                    )
+                  )}
+                </Typography>
               </Box>
               <Button
                 variant="contained"
                 color="success"
                 fullWidth
                 style={{ marginTop: "20px" }}
+                onClick={handlePayment}
               >
                 Go To Checkout
               </Button>
@@ -276,6 +315,11 @@ const Cart = () => {
           </Card>
         </Grid>
       </Grid>
+      <Payment
+        openPaymentdialog={openPaymentdialog}
+        handleClosePaymentDialog={() => setOpenPaymentdialog(false)}
+        cart={cart}
+      />
     </Container>
   );
 };

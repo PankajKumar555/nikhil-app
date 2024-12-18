@@ -11,7 +11,13 @@ import Category from "./Category";
 import Sort from "./Sort";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function FilterBar() {
+export default function FilterBar({
+  selectedCheckBox,
+  minPrice,
+  maxPrice,
+  setPriceRange,
+}) {
+  // console.log("categoryData-----", categoryData);
   return (
     <>
       <Box
@@ -30,8 +36,12 @@ export default function FilterBar() {
             alignItems: "center",
           }}
         >
-          <Availability />
-          <Price />
+          <Availability selectedCheckBox={selectedCheckBox} />
+          <Price
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            setPriceRange={setPriceRange}
+          />
           <Category />
         </Box>
         <Box
