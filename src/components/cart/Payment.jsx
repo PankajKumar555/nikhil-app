@@ -7,11 +7,12 @@ import DialogContent from "@mui/material/DialogContent";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CloseIcon from "@mui/icons-material/Close";
-import { endpoints, postData } from "../../api/apiMethod";
+import { endpoints, fetchData, postData } from "../../api/apiMethod";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setCartId } from "../../redux/slice/orderSlice";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { currencySymbol } from "../generic-component/helper-function/HelperFunction";
 
 const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
   const [formData, setFormData] = React.useState({
@@ -22,10 +23,26 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     city: "",
     state: "",
     postalCode: "",
+    gstin: "",
   });
   const [errors, setErrors] = React.useState({});
+  const [orderCartId, setOrderCartId] = React.useState();
+  const [orderData, setOrderData] = React.useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const formatCurrency = (number) => {
+    return number.toLocaleString("en-US", {
+      style: "currency",
+      currency: "INR",
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" }); // Clear error when user starts typing
+  };
 
   React.useEffect(() => {
     if (openPaymentdialog) {
@@ -38,8 +55,9 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
       const getCartDetails = async () => {
         try {
           const result = await postData(endpoints.saveCartDetails, payload);
+          setOrderCartId(result?.data);
           dispatch(setCartId(result?.data)); // Save the cartId to the Redux store
-          console.log("cartresult-----", result);
+          // console.log("cartresult-----", result);
           // setCartId(result?.data);
         } catch (error) {
           console.error("Error fetching category data:", error);
@@ -50,10 +68,41 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     }
   }, [openPaymentdialog]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" }); // Clear error when user starts typing
+  React.useEffect(() => {
+    if (orderCartId) {
+      const getCartDetails = async () => {
+        try {
+          const result = await fetchData(
+            endpoints.getCartDetails + orderCartId
+          );
+          setOrderData(result?.data);
+        } catch (error) {
+          console.error("Error fetching category data:", error);
+        }
+      };
+
+      getCartDetails(); // Call the async function
+    }
+  }, [orderCartId]);
+
+  const handleSaveOrderDetails = async () => {
+    const payload = {
+      cartId: orderData?.cartId,
+      orderAmt: orderData?.totalAmount,
+      name: formData?.name,
+      email: formData?.email,
+      mobile: formData?.phone,
+      address: formData?.streetAddress,
+      city: formData?.city,
+      state: formData?.state,
+      pincode: formData?.postalCode,
+      gst: formData?.gstin,
+    };
+    try {
+      await postData(endpoints.saveCartOrderDetails, payload);
+    } catch (error) {
+      console.error("Error fetching category data:", error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -79,17 +128,10 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
       });
       return; // Prevent form submission
     }
-
+    handleSaveOrderDetails();
     console.log("Form Submitted Successfully:", formData);
     navigate("/thank-you");
     // Add your submission logic here (e.g., API call)
-  };
-
-  const formatCurrency = (number) => {
-    return number.toLocaleString("en-US", {
-      style: "currency",
-      currency: "INR",
-    });
   };
 
   return (
@@ -245,12 +287,8 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
               Amount Payable
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-              {formatCurrency(
-                cart?.reduce(
-                  (sum, amount) => sum + amount.unitPrice * amount.count,
-                  0
-                )
-              )}
+              {currencySymbol}
+              {orderData?.totalAmount}
             </Typography>
           </Box>
           <Typography
@@ -314,7 +352,6 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
               onChange={handleChange}
               error={!!errors.email}
               helperText={errors.email}
-              required
               InputLabelProps={{ shrink: true }}
               sx={{
                 margin: "4px auto",
@@ -409,6 +446,17 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
               sx={{ flex: 1, margin: "4px auto" }}
             />
           </Box>
+          <TextField
+            fullWidth
+            label="Gst Number"
+            name="gstin"
+            value={formData.gstin}
+            onChange={handleChange}
+            error={!!errors.gstin}
+            helperText={errors.gstin}
+            InputLabelProps={{ shrink: true }}
+            sx={{ flex: 1, margin: "4px auto" }}
+          />
         </DialogContent>
         <DialogActions sx={{ margin: "0.5rem 0px" }}>
           <Box sx={{ width: "100%", textAlign: "center" }}>

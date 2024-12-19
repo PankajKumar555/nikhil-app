@@ -11,14 +11,28 @@ import {
   Typography,
 } from "@mui/material";
 import "./index.css";
+import { useParams } from "react-router";
 
-export default function Category() {
+export default function Category({ childCategoryData, setChlidCategoryId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const { slug } = useParams();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleReset = () => {
+    setAnchorEl(null);
+    setChlidCategoryId(slug);
+  };
+
+  const handleSelectChildCategory = (e, categoryId) => {
+    e.preventDefault();
+    setChlidCategoryId(categoryId);
     setAnchorEl(null);
   };
 
@@ -58,7 +72,7 @@ export default function Category() {
         >
           <Typography
             variant="body2"
-            onClick={handleClose}
+            onClick={handleReset}
             sx={{
               textAlign: "right",
               padding: "0.5rem 1rem",
@@ -69,15 +83,21 @@ export default function Category() {
             Reset
           </Typography>
           <Divider />
-          {["a", "b", "c", "d", "f", "g"].map((item, index) => (
+          {childCategoryData?.map((item, index) => (
             <MenuItem
               //    onClick={handleClose}
               key={index}
             >
               <FormControlLabel
                 //   required
-                control={<Checkbox />}
-                label={item}
+                control={
+                  <Checkbox
+                    onClick={(e) =>
+                      handleSelectChildCategory(e, item?.categoryId)
+                    }
+                  />
+                }
+                label={item?.categoryName}
               />
             </MenuItem>
           ))}

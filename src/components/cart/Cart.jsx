@@ -309,7 +309,7 @@ const Cart = () => {
                 style={{ marginTop: "20px" }}
                 onClick={handlePayment}
               >
-                Go To Checkout
+                Proceed
               </Button>
             </CardContent>
           </Card>

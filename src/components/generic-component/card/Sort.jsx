@@ -1,32 +1,13 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Box,
-  Divider,
-  FormControl,
-  InputBase,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Box, FormControl, InputBase, Select, Typography } from "@mui/material";
 import "./index.css";
 
-export default function Sort() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [age, setAge] = React.useState(0);
+export default function Sort({ onSort }) {
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setValue(event.target.value);
   };
 
   return (
@@ -41,7 +22,7 @@ export default function Sort() {
       <div>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <Select
-            value={age}
+            value={value}
             onChange={handleChange}
             // displayEmpty
             inputProps={{ "aria-label": "Without label" }}
@@ -55,13 +36,21 @@ export default function Sort() {
               />
             }
           >
-            <MenuItem value={0}>
+            <MenuItem value="none" onClick={() => onSort("none")}>
               <em>None</em>
             </MenuItem>
-            <MenuItem value={10}>low to high</MenuItem>
-            <MenuItem value={20}>high to low</MenuItem>
-            <MenuItem value={30}>A to Z</MenuItem>
-            <MenuItem value={30}>Z to A</MenuItem>
+            <MenuItem value="lowToHigh" onClick={() => onSort("lowToHigh")}>
+              Low to High
+            </MenuItem>
+            <MenuItem value="highToLow" onClick={() => onSort("highToLow")}>
+              High to Low
+            </MenuItem>
+            <MenuItem value="aToZ" onClick={() => onSort("aToZ")}>
+              A to Z
+            </MenuItem>
+            <MenuItem value="zToA" onClick={() => onSort("zToA")}>
+              Z to A
+            </MenuItem>
           </Select>
           {/* <FormHelperText>Without label</FormHelperText> */}
         </FormControl>

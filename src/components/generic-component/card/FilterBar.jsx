@@ -16,6 +16,9 @@ export default function FilterBar({
   minPrice,
   maxPrice,
   setPriceRange,
+  childCategoryData,
+  setChlidCategoryId,
+  onSort,
 }) {
   // console.log("categoryData-----", categoryData);
   return (
@@ -42,7 +45,10 @@ export default function FilterBar({
             maxPrice={maxPrice}
             setPriceRange={setPriceRange}
           />
-          <Category />
+          <Category
+            childCategoryData={childCategoryData}
+            setChlidCategoryId={setChlidCategoryId}
+          />
         </Box>
         <Box
           sx={{
@@ -51,7 +57,7 @@ export default function FilterBar({
             alignItems: "center",
           }}
         >
-          <Sort />
+          <Sort onSort={onSort} />
         </Box>
       </Box>
       <Box

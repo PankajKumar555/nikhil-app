@@ -57,35 +57,30 @@ const ThankYouPage = () => {
 
   React.useEffect(() => {
     if (cartId) {
-      // const rawCart = localStorage.getItem("cart");
-      // const cart = JSON.parse(rawCart);
-
-      // if (!rawCart) {
-      //   console.log("No cart found");
-      //   return;
-      // }
-      // const payload = cart?.map((item) => ({
-      //   productId: item.productId,
-      //   noOfUnit: item.count,
-      //   unitPrice: item.unitPrice,
-      // }));
-      // console.log("---payload", payload);
       const getCartDetails = async () => {
         try {
-          const result = await fetchData(
-            endpoints.getCartDetails + cartId
-            // payload
-          );
-          //   dispatch(setCartId(result?.data)); // Save the cartId to the Redux store
-          console.log("cartIdresult-----", result);
+          const result = await fetchData(endpoints.getCartDetails + cartId);
           setOrderData(result?.data);
-          // setCartId(result?.data);
         } catch (error) {
           console.error("Error fetching category data:", error);
         }
       };
 
       getCartDetails(); // Call the async function
+    }
+  }, [cartId]);
+
+  React.useEffect(() => {
+    if (cartId) {
+      const getOrderDetails = async () => {
+        try {
+          const result = await fetchData(endpoints.getOrderDetails + cartId);
+          // setOrderData(result?.data);
+        } catch (error) {
+          console.error("Error fetching category data:", error);
+        }
+      };
+      getOrderDetails(); // Call the async function
     }
   }, [cartId]);
 

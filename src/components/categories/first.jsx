@@ -12,34 +12,48 @@ export const First = ({}) => {
   const location = useLocation(); // Get the current route
 
   console.log(
-    "slug----",
+    "dynamicSlug----",
     slug,
     typeof slug,
     location,
     location.pathname.startsWith("/categories")
   );
-
+  const [dynamicSlug, setDynamicSlug] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
   const [filteredData, setFilteredData] = useState([]); // Filtered data
+  const [childCategoryData, setChildCategoryData] = useState([]); // Filtered data
   const [priceRange, setPriceRange] = useState({ min: null, max: null }); // Price range
-  const [loading, setLoading] = useState(true); // Price range
+  const [loading, setLoading] = useState(true);
+  // const [chlidCategoryId, setChlidCategoryId] = useState(null);
 
   const [selectedCheckBox, setSelectedCheckBox] = useState(null);
 
-  console.log("---------priceRange", priceRange, categoryData);
+  console.log(
+    "---------priceRange",
+    priceRange,
+    categoryData,
+    slug,
+    dynamicSlug
+  );
+
+  useEffect(() => {
+    setDynamicSlug(slug);
+  }, [slug]);
 
   useEffect(() => {
     const loadCategoryData = async () => {
       try {
         let result;
         if (location.pathname.startsWith("/categories")) {
-          result = await fetchData(endpoints.getAllProductsByCategoryId + slug);
+          result = await fetchData(
+            endpoints.getAllProductsByCategoryId + dynamicSlug
+          );
         } else if (location.pathname.startsWith("/products/productName")) {
-          result = await fetchData(endpoints.getSearchProducts + slug);
+          result = await fetchData(endpoints.getSearchProducts + dynamicSlug);
         } else if (location.pathname === "/all-products") {
           result = await fetchData(endpoints.getAllProducts);
         } else {
-          console.error("Unhandled route or slug type");
+          console.error("Unhandled route or dynamicSlug type");
           result = { list: [] };
         }
 
@@ -52,7 +66,7 @@ export const First = ({}) => {
     };
 
     loadCategoryData();
-  }, [slug]);
+  }, [dynamicSlug]);
 
   useEffect(() => {
     if (selectedCheckBox === "inStock") {
@@ -87,6 +101,40 @@ export const First = ({}) => {
     }
   }, [priceRange, categoryData]);
 
+  React.useEffect(() => {
+    const loadChildCategoryData = async () => {
+      try {
+        if (dynamicSlug) {
+          const result = await fetchData(
+            endpoints.getChildCategories + dynamicSlug
+          );
+          console.log("--------child", result);
+          setChildCategoryData(result?.list);
+        }
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+
+    loadChildCategoryData();
+  }, [dynamicSlug]);
+
+  const handleSort = (type) => {
+    let sortedData = [...categoryData];
+    if (type === "lowToHigh") {
+      sortedData.sort((a, b) => a.offerPrice - b.offerPrice);
+    } else if (type === "highToLow") {
+      sortedData.sort((a, b) => b.offerPrice - a.offerPrice);
+    } else if (type === "aToZ") {
+      sortedData.sort((a, b) => a.productName.localeCompare(b.productName));
+    } else if (type === "zToA") {
+      sortedData.sort((a, b) => b.productName.localeCompare(a.productName));
+    } else if (type === "none") {
+      sortedData = categoryData;
+    }
+    setFilteredData(sortedData);
+  };
+
   return (
     <div>
       <Grid container item xs={11} sm={11} md={11} lg={11} margin="auto">
@@ -101,6 +149,9 @@ export const First = ({}) => {
             minPrice={priceRange?.min}
             maxPrice={priceRange?.max}
             setPriceRange={setPriceRange}
+            childCategoryData={childCategoryData}
+            setChlidCategoryId={setDynamicSlug}
+            onSort={handleSort}
           />
         </Grid>
 
