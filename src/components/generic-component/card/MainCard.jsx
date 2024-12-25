@@ -4,11 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box, CardActionArea } from "@mui/material";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export default function MainCard({ url, heading }) {
-  // console.log(url, heading);
   return (
     <Card
       sx={{
@@ -24,6 +22,8 @@ export default function MainCard({ url, heading }) {
         <Box
           sx={{
             overflow: "hidden",
+            height: "150px",
+            maxHeight: "150px",
           }}
         >
           <CardMedia
@@ -32,7 +32,7 @@ export default function MainCard({ url, heading }) {
             image={url}
             alt={heading}
             sx={{
-              // maxWidth: 345,
+              objectFit: "contain",
               transition: "transform 0.9s ease",
               "&:hover": {
                 transform: "scale(1.05)",

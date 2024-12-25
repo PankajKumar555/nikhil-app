@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { data } from "../../dummy-data/DummyData.js";
 import ProductCard from "../generic-component/card/ProductCard.jsx";
 import { endpoints, fetchData } from "../../api/apiMethod.js";
 
 export const RelatedProducts = ({ productDetails }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
-  // console.log("relatedProducts-----", relatedProducts);
 
   useEffect(() => {
     if (productDetails) {
@@ -15,7 +13,6 @@ export const RelatedProducts = ({ productDetails }) => {
           const result = await fetchData(
             endpoints.getAllRelatedProducts + productDetails?.relatedProducts
           );
-          // console.log("resultRelated-----", result);
           setRelatedProducts(result);
         } catch (error) {
           console.error("Error fetching category data:", error);
@@ -24,7 +21,7 @@ export const RelatedProducts = ({ productDetails }) => {
 
       loadCategoryData();
     }
-  }, [productDetails]); // Re-run when the slug changes
+  }, [productDetails]);
 
   return (
     <Box sx={{ width: "100%", margin: "2rem 0px" }}>
@@ -34,26 +31,17 @@ export const RelatedProducts = ({ productDetails }) => {
       <Box>
         <Box
           sx={{
-            display: "flex", // Use flexbox for horizontal layout
-            overflowX: "auto", // Enable horizontal scrolling
-            // padding: "1rem", // Optional: add padding
-            // gap: "1rem", // Optional: space between items
+            display: "flex",
+            overflowX: "auto",
             "&::-webkit-scrollbar": {
-              // Hide the scrollbar for Webkit-based browsers
               display: "none",
             },
-            msOverflowStyle: "none", // Hide scrollbar for IE and Edge
+            msOverflowStyle: "none",
             scrollbarWidth: "none",
           }}
         >
           {relatedProducts?.list?.map((data, index) => (
-            <Grid
-              key={index}
-              item
-              // md={3}
-              sx={{ margin: "auto", padding: "0.5rem" }}
-              // onClick={() => handleNavigate(index)}
-            >
+            <Grid key={index} item sx={{ margin: "auto", padding: "0.5rem" }}>
               <ProductCard data={data} />
             </Grid>
           ))}

@@ -1,62 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { endpoints, fetchData } from "../../../api/apiMethod";
 import { useNavigate } from "react-router";
 
 const CircularImage = styled("img")({
   borderRadius: "50%",
-  width: "55px", // Adjust size as needed
-  height: "55px", // Adjust size as needed
+  width: "55px",
+  height: "55px",
   objectFit: "cover",
-  margin: "0 auto", // Center the image
+  margin: "0 auto",
 });
 
-const items = [
-  {
-    image: "https://via.placeholder.com/100",
-    name: "Gift Item 1",
-  },
-  {
-    image: "https://via.placeholder.com/100",
-    name: "Gift Item 2",
-  },
-  {
-    image: "https://via.placeholder.com/100",
-    name: "Gift Item 3",
-  },
-  {
-    image: "https://via.placeholder.com/100",
-    name: "Gift Item 4",
-  },
-  {
-    image: "https://via.placeholder.com/100",
-    name: "Gift Item 5",
-  },
-];
-
 const GiftItemSlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState([]);
-  const itemsPerPage = 3; // Number of items to show at once
   const navigate = useNavigate();
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      Math.min(prevIndex + itemsPerPage, items.length - itemsPerPage)
-    );
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - itemsPerPage, 0));
-  };
-
   useEffect(() => {
-    // Fetching data when the component mounts
     const loadData = async () => {
       try {
-        const result = await fetchData(endpoints.getProductIdentifier); // Replace '/items' with your actual endpoint
-        console.log("indentifier----->>>>", result);
+        const result = await fetchData(endpoints.getProductIdentifier);
         setData(result?.list);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -64,7 +27,7 @@ const GiftItemSlider = () => {
     };
 
     loadData();
-  }, []); // Em
+  }, []);
 
   const handleNavigate = (item, index) => {
     if (item?.identifierId) {
@@ -78,7 +41,6 @@ const GiftItemSlider = () => {
     <Box
       sx={{
         backgroundColor: "white",
-        // padding: "2rem",
         textAlign: "center",
         marginBottom: "1rem",
       }}
@@ -91,20 +53,13 @@ const GiftItemSlider = () => {
           alignItems: "center",
         }}
       >
-        {/* <Box
-          sx={{
-            display: "flex",
-            // transform: `translateX(-${(currentIndex / items.length) * 100}%)`,
-            // transition: "transform 0.5s ease",
-          }}
-        > */}
         {data?.map((item, index) => (
           <Box
             key={index}
             sx={{ padding: "1rem", width: "auto", cursor: "pointer" }}
             onClick={() => handleNavigate(item, index)}
           >
-            <CircularImage src={item?.image} alt={item?.identifierName} />
+            <CircularImage src={item?.imgLink} alt={item?.identifierName} />
             <Typography
               variant="body2"
               sx={{ marginTop: "0.5rem", textWrap: "nowrap" }}
@@ -113,25 +68,7 @@ const GiftItemSlider = () => {
             </Typography>
           </Box>
         ))}
-        {/* </Box> */}
       </Box>
-      {/* <Box sx={{ marginTop: "1rem" }}>
-        <Button
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-          variant="outlined"
-        >
-          Prev
-        </Button>
-        <Button
-          onClick={handleNext}
-          disabled={currentIndex >= items.length - itemsPerPage}
-          variant="outlined"
-          sx={{ marginLeft: "1rem" }}
-        >
-          Next
-        </Button>
-      </Box> */}
     </Box>
   );
 };

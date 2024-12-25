@@ -12,9 +12,12 @@ import {
 } from "@mui/material";
 import "./index.css";
 
-export default function Availability({ selectedCheckBox }) {
+export default function Availability({
+  selectedCheckBox,
+  selectedOption,
+  setSelectedOption,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedOption, setSelectedOption] = React.useState(""); // Track which checkbox is selected
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,19 +25,18 @@ export default function Availability({ selectedCheckBox }) {
   const handleClose = () => {
     setAnchorEl(null);
     selectedCheckBox(null);
-    setSelectedOption(""); // Deselect all if unchecked
+    setSelectedOption("");
   };
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
-    // Update the state based on the checkbox name and checked status
-    // Allow only one checkbox to be selected at a time
     if (checked) {
       setSelectedOption(name);
       selectedCheckBox(name);
       setAnchorEl(null);
     } else {
-      setSelectedOption(""); // Deselect all if unchecked
+      setSelectedOption("");
+      selectedCheckBox(null);
       setAnchorEl(null);
     }
   };
@@ -87,11 +89,8 @@ export default function Availability({ selectedCheckBox }) {
             Reset
           </Typography>
           <Divider />
-          <MenuItem
-          //    onClick={handleClose}
-          >
+          <MenuItem>
             <FormControlLabel
-              //   required
               control={
                 <Checkbox
                   name="inStock"
@@ -104,7 +103,6 @@ export default function Availability({ selectedCheckBox }) {
           </MenuItem>
           <MenuItem>
             <FormControlLabel
-              //   required
               control={
                 <Checkbox
                   name="outOfStock"

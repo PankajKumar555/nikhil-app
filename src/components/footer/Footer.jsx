@@ -75,19 +75,15 @@ export const Footer = () => {
                   </p>
                   <div class="footer-social">
                     <a href="https://www.twitter.com/">
-                      {/* <i class="fab fa-twitter"></i> */}
                       <XIcon />
                     </a>
                     <a href="https://www.facebook.com/">
-                      {/* <i class="fab fa-facebook-f"></i> */}
                       <FacebookIcon />
                     </a>
                     <a href="https://www.youtube.com/">
-                      {/* <i class="fab fa-youtube"></i> */}
                       <YouTubeIcon />
                     </a>
                     <a href="https://www.instagram.com/">
-                      {/* <i class="fab fa-instagram"></i> */}
                       <InstagramIcon />
                     </a>
                   </div>
@@ -112,17 +108,7 @@ export const Footer = () => {
             </div>
           </div>
           <div class="footer-copyright">
-            {/* <div class="footer-row"> */}
-            {/* <div class="footer-column"> */}
-            <p>&copy; Annapurna Trading Corporation, All Rights Reserved.</p>
-            {/* </div> */}
-            {/* <div class="footer-column">
-                <p>
-                  Developed & Maintained By
-                  <p href="#">R.Tech Solutions</p>
-                </p>
-              </div> */}
-            {/* </div> */}
+            <p>&copy; Shubhilsha Trading, All Rights Reserved.</p>
           </div>
         </div>
       </div>

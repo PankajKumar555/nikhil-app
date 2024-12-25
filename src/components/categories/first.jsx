@@ -1,40 +1,26 @@
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { data } from "../../dummy-data/DummyData.js";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import ProductCard from "../generic-component/card/ProductCard.jsx";
 import FilterBar from "../generic-component/card/FilterBar.jsx";
 import { endpoints, fetchData } from "../../api/apiMethod.js";
+import CloseIcon from "@mui/icons-material/Close";
+import { currencySymbol } from "../generic-component/helper-function/HelperFunction.js";
+import { UpIcon } from "../generic-component/up-icon/UpIcon.jsx";
 
-export const First = ({}) => {
-  // const navigate = useNavigate();
+export const First = () => {
   const { slug } = useParams();
-  const location = useLocation(); // Get the current route
-
-  console.log(
-    "dynamicSlug----",
-    slug,
-    typeof slug,
-    location,
-    location.pathname.startsWith("/categories")
-  );
+  const location = useLocation();
   const [dynamicSlug, setDynamicSlug] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); // Filtered data
-  const [childCategoryData, setChildCategoryData] = useState([]); // Filtered data
-  const [priceRange, setPriceRange] = useState({ min: null, max: null }); // Price range
+  const [filteredData, setFilteredData] = useState([]);
+  const [childCategoryData, setChildCategoryData] = useState([]);
+  const [priceRange, setPriceRange] = useState({ min: null, max: 10000 });
   const [loading, setLoading] = useState(true);
-  // const [chlidCategoryId, setChlidCategoryId] = useState(null);
-
+  const [chlidCategoryName, setChlidCategoryName] = useState("");
   const [selectedCheckBox, setSelectedCheckBox] = useState(null);
-
-  console.log(
-    "---------priceRange",
-    priceRange,
-    categoryData,
-    slug,
-    dynamicSlug
-  );
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [selectedOption, setSelectedOption] = React.useState("");
 
   useEffect(() => {
     setDynamicSlug(slug);
@@ -43,72 +29,45 @@ export const First = ({}) => {
   useEffect(() => {
     const loadCategoryData = async () => {
       try {
-        let result;
-        if (location.pathname.startsWith("/categories")) {
-          result = await fetchData(
-            endpoints.getAllProductsByCategoryId + dynamicSlug
-          );
-        } else if (location.pathname.startsWith("/products/productName")) {
-          result = await fetchData(endpoints.getSearchProducts + dynamicSlug);
+        if (dynamicSlug) {
+          let result;
+          if (location.pathname.startsWith("/categories")) {
+            result = await fetchData(
+              endpoints.getAllProductsByCategoryId + dynamicSlug
+            );
+          } else if (location.pathname.startsWith("/products/productName")) {
+            result = await fetchData(endpoints.getSearchProducts + dynamicSlug);
+          } else if (location.pathname.startsWith("/identifier")) {
+            result = await fetchData(
+              endpoints.getAllProductsIdentifier + dynamicSlug
+            );
+          } else {
+            console.error("Unhandled route or dynamicSlug type");
+            result = { list: [] };
+          }
+          setCategoryData(result?.list || []);
+          setFilteredData(result?.list || []);
+          setLoading(false);
         } else if (location.pathname === "/all-products") {
-          result = await fetchData(endpoints.getAllProducts);
-        } else {
-          console.error("Unhandled route or dynamicSlug type");
-          result = { list: [] };
+          let result = await fetchData(endpoints.getAllProducts);
+          setCategoryData(result?.list || []);
+          setFilteredData(result?.list || []);
+          setLoading(false);
         }
-
-        setCategoryData(result?.list || []);
-        setFilteredData(result?.list || []); // Initialize filtered data
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
     };
-
     loadCategoryData();
   }, [dynamicSlug]);
-
-  useEffect(() => {
-    if (selectedCheckBox === "inStock") {
-      const inStockProducts = categoryData.filter(
-        (item) => item.inStock === true
-      );
-      setFilteredData(inStockProducts);
-    } else if (selectedCheckBox === "outOfStock") {
-      const inStockProducts = categoryData.filter(
-        (item) => item.inStock === false
-      );
-      setFilteredData(inStockProducts);
-    } else {
-      setFilteredData(categoryData);
-    }
-  }, [selectedCheckBox, categoryData]);
-
-  useEffect(() => {
-    const { min, max } = priceRange;
-
-    // Apply price range filter
-    if (min || max) {
-      const filtered = categoryData.filter((item) => {
-        const price = item.offerPrice || 0;
-        const isMinValid = min ? price >= min : true;
-        const isMaxValid = max ? price <= max : true;
-        return isMinValid && isMaxValid;
-      });
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(categoryData); // Reset filter if no price range is selected
-    }
-  }, [priceRange, categoryData]);
 
   React.useEffect(() => {
     const loadChildCategoryData = async () => {
       try {
-        if (dynamicSlug) {
+        if (dynamicSlug !== undefined && dynamicSlug !== null && dynamicSlug) {
           const result = await fetchData(
             endpoints.getChildCategories + dynamicSlug
           );
-          console.log("--------child", result);
           setChildCategoryData(result?.list);
         }
       } catch (error) {
@@ -119,8 +78,29 @@ export const First = ({}) => {
     loadChildCategoryData();
   }, [dynamicSlug]);
 
-  const handleSort = (type) => {
+  useEffect(() => {
     let sortedData = [...categoryData];
+    // Apply inStock or outOfStock filter
+    if (selectedCheckBox === "inStock") {
+      sortedData = sortedData.filter((item) => item.inStock === true);
+    } else if (selectedCheckBox === "outOfStock") {
+      sortedData = sortedData.filter((item) => item.inStock === false);
+    }
+    // Apply price range filter on top of the stock filter
+    const { min, max } = priceRange;
+    if (min || max) {
+      sortedData = sortedData.filter((item) => {
+        const price = item.offerPrice || 0;
+        const isMinValid = min ? price >= min : true;
+        const isMaxValid = max ? price <= max : true;
+        return isMinValid && isMaxValid;
+      });
+    }
+    setFilteredData(sortedData);
+  }, [selectedCheckBox, priceRange, categoryData]);
+
+  const handleSort = (type) => {
+    let sortedData = [...filteredData];
     if (type === "lowToHigh") {
       sortedData.sort((a, b) => a.offerPrice - b.offerPrice);
     } else if (type === "highToLow") {
@@ -130,9 +110,19 @@ export const First = ({}) => {
     } else if (type === "zToA") {
       sortedData.sort((a, b) => b.productName.localeCompare(a.productName));
     } else if (type === "none") {
-      sortedData = categoryData;
+      sortedData = filteredData;
     }
     setFilteredData(sortedData);
+  };
+
+  const handleRemoveFilter = () => {
+    setSelectedCheckBox(null);
+    setChlidCategoryName("");
+    setPriceRange({ min: null, max: 10000 });
+    setSelectedOption("");
+    setChlidCategoryName("");
+    setDynamicSlug(slug);
+    setSelectedCategory(null);
   };
 
   return (
@@ -152,7 +142,108 @@ export const First = ({}) => {
             childCategoryData={childCategoryData}
             setChlidCategoryId={setDynamicSlug}
             onSort={handleSort}
+            setChlidCategoryName={setChlidCategoryName}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
           />
+        </Grid>
+        <Grid container item md={11} sx={{ margin: "auto" }}>
+          <Box
+            sx={{
+              display: "contents",
+              justifyContent: "left",
+              alignItems: "center",
+              margin: "0.5rem 0px 1rem",
+            }}
+          >
+            {selectedCheckBox ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  border: "1px solid gray",
+                  borderRadius: "5rem",
+                  padding: "4px 12px",
+                  cursor: "pointer",
+                  margin: "4px",
+                }}
+              >
+                Availability: {selectedCheckBox} &nbsp;
+                <CloseIcon
+                  sx={{ fontSize: "16px" }}
+                  onClick={() => {
+                    setSelectedCheckBox(null);
+                    setSelectedOption("");
+                  }}
+                />
+              </Typography>
+            ) : (
+              ""
+            )}
+            {chlidCategoryName ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  border: "1px solid gray",
+                  borderRadius: "5rem",
+                  padding: "4px 12px",
+                  cursor: "pointer",
+                  margin: "4px",
+                }}
+              >
+                Category: {chlidCategoryName} &nbsp;
+                <CloseIcon
+                  sx={{ fontSize: "16px" }}
+                  onClick={() => {
+                    setChlidCategoryName("");
+                    setDynamicSlug(slug);
+                    setSelectedCategory(null);
+                  }}
+                />
+              </Typography>
+            ) : (
+              ""
+            )}
+            {priceRange?.min && priceRange?.max ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  border: "1px solid gray",
+                  borderRadius: "5rem",
+                  padding: "4px 12px",
+                  cursor: "pointer",
+                  margin: "4px",
+                }}
+              >
+                {currencySymbol}
+                {priceRange?.min} - {currencySymbol}
+                {priceRange?.max} &nbsp;
+                <CloseIcon
+                  sx={{ fontSize: "16px" }}
+                  onClick={() => setPriceRange({ min: null, max: 10000 })}
+                />
+              </Typography>
+            ) : (
+              ""
+            )}
+            {priceRange?.min || selectedCheckBox || chlidCategoryName ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  margin: "4px",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  alignContent: "center",
+                }}
+                onClick={handleRemoveFilter}
+              >
+                Remove All
+              </Typography>
+            ) : (
+              ""
+            )}
+          </Box>
         </Grid>
 
         <Grid container item md={11} sx={{ margin: "auto" }}>
@@ -179,18 +270,8 @@ export const First = ({}) => {
                 md={4}
                 lg={3}
                 sx={{ margin: "auto", padding: "0.5rem" }}
-                // onClick={() => handleNavigate(index)}
               >
-                <ProductCard
-                  // url={data?.productImgUrl}
-                  // label={data?.productImgCaption}
-                  // heading={data?.productTitle}
-                  // price={data?.offerPrice}
-                  // description={data?.description}
-                  // listPrice={data?.listPrice}
-                  // name={data?.productName}
-                  data={data}
-                />
+                <ProductCard data={data} />
               </Grid>
             ))
           ) : (
@@ -203,6 +284,7 @@ export const First = ({}) => {
           )}
         </Grid>
       </Box>
+      <UpIcon />
     </div>
   );
 };

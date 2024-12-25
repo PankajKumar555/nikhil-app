@@ -1,15 +1,10 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import "./index.css";
 import Availability from "./Availibility";
 import Price from "./Price";
 import Category from "./Category";
 import Sort from "./Sort";
-import CloseIcon from "@mui/icons-material/Close";
 
 export default function FilterBar({
   selectedCheckBox,
@@ -19,8 +14,12 @@ export default function FilterBar({
   childCategoryData,
   setChlidCategoryId,
   onSort,
+  setChlidCategoryName,
+  selectedCategory,
+  setSelectedCategory,
+  selectedOption,
+  setSelectedOption,
 }) {
-  // console.log("categoryData-----", categoryData);
   return (
     <>
       <Box
@@ -39,7 +38,11 @@ export default function FilterBar({
             alignItems: "center",
           }}
         >
-          <Availability selectedCheckBox={selectedCheckBox} />
+          <Availability
+            selectedCheckBox={selectedCheckBox}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
           <Price
             minPrice={minPrice}
             maxPrice={maxPrice}
@@ -48,6 +51,9 @@ export default function FilterBar({
           <Category
             childCategoryData={childCategoryData}
             setChlidCategoryId={setChlidCategoryId}
+            setChlidCategoryName={setChlidCategoryName}
+            setSelectedCategory={setSelectedCategory}
+            selectedCategory={selectedCategory}
           />
         </Box>
         <Box
@@ -59,37 +65,6 @@ export default function FilterBar({
         >
           <Sort onSort={onSort} />
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "left",
-          alignItems: "center",
-          margin: "0.5rem 0px 1rem",
-        }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            border: "1px solid gray",
-            borderRadius: "5rem",
-            padding: "4px 12px",
-            cursor: "pointer",
-          }}
-        >
-          Category: exaple &nbsp;
-          <CloseIcon sx={{ fontSize: "16px" }} />
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            margin: "0px 1rem",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          Remove All
-        </Typography>
       </Box>
     </>
   );

@@ -1,4 +1,3 @@
-// FAQ.js
 import React from "react";
 import {
   Container,
@@ -8,8 +7,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   Divider,
-  AppBar,
-  Toolbar,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -59,11 +56,6 @@ const FAQ = () => {
 
   return (
     <Container maxWidth="md" sx={{ padding: 4 }}>
-      {/* <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Frequently Asked Questions</Typography>
-        </Toolbar>
-      </AppBar> */}
       <Box sx={{ marginTop: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
           FAQ

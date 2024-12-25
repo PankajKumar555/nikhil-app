@@ -1,4 +1,3 @@
-// PrivacyPolicy.js
 import React from "react";
 import {
   Container,
@@ -8,19 +7,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  AppBar,
-  Toolbar,
   Button,
 } from "@mui/material";
 
 const PrivacyPolicy = () => {
   return (
     <Container maxWidth="md" sx={{ padding: 4 }}>
-      {/* <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Privacy Policy</Typography>
-        </Toolbar>
-      </AppBar> */}
       <Box sx={{ marginTop: 2 }}>
         <Typography variant="h4" gutterBottom>
           Privacy Policy

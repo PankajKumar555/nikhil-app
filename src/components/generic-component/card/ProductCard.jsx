@@ -4,16 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box, Button, CardActionArea } from "@mui/material";
-// import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import { currencySymbol } from "../helper-function/HelperFunction";
 import { addToCart, checkIfAvailable } from "../helper-function/cart";
 
 export default function ProductCard({ data }) {
-  // console.log("=========", data);
   const route = useNavigate();
   const [isClicked, setIsClicked] = React.useState(false);
   const [value, setValue] = React.useState(1);
@@ -22,8 +19,6 @@ export default function ProductCard({ data }) {
     const fetchCounts = async () => {
       try {
         const jsonCount = await checkIfAvailable(data?.productId);
-        // console.log("-----jsonCount", jsonCount);
-
         if (jsonCount.count > 0) {
           setIsClicked(true);
           setValue(jsonCount.count);
@@ -35,7 +30,7 @@ export default function ProductCard({ data }) {
       }
     };
 
-    fetchCounts(); // Call the async function
+    fetchCounts();
   }, [value]);
 
   const handleClickButton = async (e) => {
@@ -71,11 +66,6 @@ export default function ProductCard({ data }) {
     }
   };
 
-  // const handleProductCards = () => {
-  //   console.log("enter");
-  //   toast.success("Added to cart");
-  // };
-
   const handleNavigateToProduct = (data) => {
     console.log("handleNavigateToProduct");
     route(`/categories/${data?.productCategory}/products/${data?.productId}`);
@@ -89,7 +79,7 @@ export default function ProductCard({ data }) {
         height: "25rem",
         minHeight: "25rem",
         minWidth: "250px",
-        boxShadow: "none", // Ensure no shadow is applied
+        boxShadow: "none",
         "&:hover": {
           boxShadow:
             "0px 2px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)", // Prevent hover shadow
@@ -116,7 +106,6 @@ export default function ProductCard({ data }) {
             }
             alt={data?.imageList[0]?.productImgCaption ?? ""}
             sx={{
-              // maxWidth: 345,
               transition: "transform 0.9s ease",
               height: "14rem",
               objectFit: "contain",
@@ -140,9 +129,9 @@ export default function ProductCard({ data }) {
               display: "-webkit-box",
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              WebkitLineClamp: 2, // Limits to 2 lines
-              textOverflow: "ellipsis", // Adds the ellipsis ("...") at the end
-              minHeight: "3em", // Adjust to match the height of 2 lines
+              WebkitLineClamp: 2,
+              textOverflow: "ellipsis",
+              minHeight: "3em",
               lineHeight: "1.5em",
             }}
           >
@@ -243,11 +232,8 @@ export default function ProductCard({ data }) {
               <Button
                 variant="outlined"
                 sx={{
-                  // fontSize: "11px",
                   textTransform: "capitalize",
-                  // fontWeight: "bold",
                   padding: "6px 20px",
-                  // borderRadius: "10px",
                   width: "100%",
                   border: "1px solid #15741a",
                   color: "#15741a",

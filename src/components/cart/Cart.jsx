@@ -14,18 +14,15 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { addToCart } from "../generic-component/helper-function/cart";
 import Payment from "./Payment";
-// import Payment from "./Payment";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
-  console.log("cart------", cart);
   const [reloadFlag, setReloadFlag] = useState(false);
   const [openPaymentdialog, setOpenPaymentdialog] = useState(false);
 
   const getInitializeCart = () => {
     const rawCart = localStorage.getItem("cart");
     const cart = JSON.parse(rawCart);
-
     if (!rawCart) {
       console.log("No cart found");
       return;
@@ -36,7 +33,6 @@ const Cart = () => {
 
   useEffect(() => {
     getInitializeCart();
-    // setOrders(dataStore);
   }, [reloadFlag]);
 
   const formatCurrency = (number) => {
@@ -49,34 +45,17 @@ const Cart = () => {
   const handleValueDecrease = async (item) => {
     await addToCart(item, false);
     setReloadFlag(true);
-
-    // e.stopPropagation();
-    // const countJson = await addToCart(data, false);
-    // if (countJson?.count && countJson?.count > 0) {
-    //   setValue(value - 1);
-    //   setIsClicked(true);
-    // } else {
-    //   setIsClicked(false);
-    // }
   };
 
   const handleValueIncrease = async (item) => {
-    // e.stopPropagation();
     await addToCart(item, true);
-    // if (countJson?.count && countJson?.count > 0) {
     setReloadFlag(true);
-    // setIsClicked(true);
-    // } else {
-    //   setReloadFlag(false);
-    // }
   };
 
   const handleDeleteProduct = (item) => {
-    // setOrders((prevOrders) => prevOrders.filter((o) => o.id !== item.id));
     const filteredCart = cart?.filter(
       (product) => product.productId !== item?.productId
     );
-    // console.log("----filteredCart", filteredCart);
     localStorage.setItem("cart", JSON.stringify(filteredCart));
     setReloadFlag(true);
   };
@@ -84,21 +63,6 @@ const Cart = () => {
   const handlePayment = () => {
     setOpenPaymentdialog(true);
   };
-
-  // const handleMinus = (item) => {
-  //   setOrders((prevOrders) => {
-  //     const existingOrderIndex = prevOrders.findIndex((o) => o.id === item.id);
-  //     if (
-  //       existingOrderIndex >= 0 &&
-  //       prevOrders[existingOrderIndex].quantity > 1
-  //     ) {
-  //       const updatedOrders = [...prevOrders];
-  //       updatedOrders[existingOrderIndex].quantity -= 1;
-  //       return updatedOrders;
-  //     }
-  //     return prevOrders;
-  //   });
-  // };
 
   return (
     <Container>
@@ -141,7 +105,6 @@ const Cart = () => {
                         <div
                           style={{
                             display: "flex",
-                            // flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
                           }}
@@ -189,12 +152,9 @@ const Cart = () => {
                             </Box>
                           </div>
                         </div>
-                        {/* <br /> */}
                         <div
                           style={{
-                            // flexGrow: 1,
                             display: "flex",
-                            // flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
                             marginTop: "0.5rem",
@@ -221,10 +181,27 @@ const Cart = () => {
                           >
                             Remove
                           </Button>
-                          <Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "end",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography
+                              style={{
+                                marginLeft: "auto",
+                                textDecoration: "line-through",
+                                color: "gray",
+                              }}
+                              variant="body1"
+                            >
+                              {formatCurrency(item?.listPrice * item?.count)}
+                            </Typography>
+                            &nbsp; &nbsp;
                             <Typography
                               style={{ marginLeft: "auto" }}
-                              variant="h6"
+                              variant="body1"
                             >
                               {formatCurrency(item?.unitPrice * item?.count)}
                             </Typography>
@@ -325,9 +302,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-// Render the Cart component
-// ReactDOM.render(
-//   <Cart />,
-//   document.getElementById("root")
-// );

@@ -7,18 +7,17 @@ import {
   TextField,
   Button,
   Box,
-  Typography,
   Divider,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import CloseIcon from "@mui/icons-material/Close";
 
 function LoginPopup({ open, setOpen }) {
-  const [isSignUp, setIsSignUp] = useState(false); // Toggle between login and signup
-  const [value, setValue] = useState(""); // Input value (email or phone)
-  const [otp, setOtp] = useState(""); // OTP value
-  const [otpSent, setOtpSent] = useState(false); // Flag for OTP sent
-  const [error, setError] = useState(""); // Validation error message
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [value, setValue] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [error, setError] = useState("");
 
   // Sign-up related states
   const [username, setUsername] = useState("");

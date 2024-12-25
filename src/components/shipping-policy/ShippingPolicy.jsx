@@ -1,4 +1,3 @@
-// ShippingPolicy.js
 import React from "react";
 import {
   Container,
@@ -8,18 +7,11 @@ import {
   List,
   ListItem,
   ListItemText,
-  AppBar,
-  Toolbar,
 } from "@mui/material";
 
 const ShippingPolicy = () => {
   return (
     <Container maxWidth="md" sx={{ padding: 4 }}>
-      {/* <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Shipping Policy</Typography>
-        </Toolbar>
-      </AppBar> */}
       <Box sx={{ marginTop: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
           Shipping Policy

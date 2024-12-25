@@ -1,18 +1,13 @@
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { data } from "../../dummy-data/DummyData.js";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import ProductCard from "../generic-component/card/ProductCard.jsx";
 import FilterBar from "../generic-component/card/FilterBar.jsx";
 import { endpoints, fetchData } from "../../api/apiMethod.js";
 
 export const Identifier = ({}) => {
-  // const navigate = useNavigate();
   const { slug } = useParams();
-  // console.log("slug----", slug);
-
   const [categoryData, setCategoryData] = useState([]);
-  // console.log("---------categoryData", categoryData);
 
   useEffect(() => {
     if (slug) {
@@ -29,7 +24,7 @@ export const Identifier = ({}) => {
 
       loadCategoryData();
     }
-  }, [slug]); // Re-run when the slug changes
+  }, [slug]);
 
   return (
     <div>
@@ -54,18 +49,8 @@ export const Identifier = ({}) => {
                   md={4}
                   lg={3}
                   sx={{ margin: "auto", padding: "0.5rem" }}
-                  // onClick={() => handleNavigate(index)}
                 >
-                  <ProductCard
-                    // url={data?.productImgUrl}
-                    // label={data?.productImgCaption}
-                    // heading={data?.productTitle}
-                    // price={data?.offerPrice}
-                    // description={data?.description}
-                    // listPrice={data?.listPrice}
-                    // name={data?.productName}
-                    data={data}
-                  />
+                  <ProductCard data={data} />
                 </Grid>
               ))
             : Array.from({ length: 8 }).map((_, i) => (

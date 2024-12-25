@@ -1,9 +1,5 @@
-import React, { useContext, useState } from "react";
-// import baseURL from "../../../apiUrls/ApiUrls";
-// import axios from "axios";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
 import Spiner from "../spiner/Spiner";
-// import { AuthContext } from "../../../context/context";
 import { useNavigate } from "react-router";
 import "./login.css";
 
@@ -16,7 +12,6 @@ const Login = () => {
     password: "",
   });
   const navigate = useNavigate();
-  // const { setUserDetails, setIsUserLoggedIn } = useContext(AuthContext);
 
   const toggleForm = () => {
     setIsLogin((prevState) => !prevState);

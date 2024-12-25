@@ -1,4 +1,3 @@
-// RefundPolicy.js
 import React from "react";
 import {
   Box,
@@ -8,18 +7,11 @@ import {
   List,
   ListItem,
   ListItemText,
-  AppBar,
-  Toolbar,
 } from "@mui/material";
 
 const RefundPolicy = () => {
   return (
     <Container maxWidth="md" sx={{ padding: 4 }}>
-      {/* <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Refund Policy</Typography>
-        </Toolbar>
-      </AppBar> */}
       <Box sx={{ marginTop: 2 }}>
         <Typography variant="h4" gutterBottom>
           Refund Policy

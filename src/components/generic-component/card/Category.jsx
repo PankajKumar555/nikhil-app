@@ -13,7 +13,13 @@ import {
 import "./index.css";
 import { useParams } from "react-router";
 
-export default function Category({ childCategoryData, setChlidCategoryId }) {
+export default function Category({
+  childCategoryData,
+  setChlidCategoryId,
+  setChlidCategoryName,
+  selectedCategory,
+  setSelectedCategory,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const { slug } = useParams();
@@ -28,11 +34,15 @@ export default function Category({ childCategoryData, setChlidCategoryId }) {
   const handleReset = () => {
     setAnchorEl(null);
     setChlidCategoryId(slug);
+    setSelectedCategory(null);
+    setChlidCategoryName("");
   };
 
-  const handleSelectChildCategory = (e, categoryId) => {
+  const handleSelectChildCategory = (e, item) => {
     e.preventDefault();
-    setChlidCategoryId(categoryId);
+    setSelectedCategory(item?.categoryId);
+    setChlidCategoryId(item?.categoryId);
+    setChlidCategoryName(item?.categoryName);
     setAnchorEl(null);
   };
 
@@ -44,7 +54,6 @@ export default function Category({ childCategoryData, setChlidCategoryId }) {
         alignItems: "center",
       }}
     >
-      {/* <Typography variant="body1">Filter :</Typography> */}
       <div>
         <Button
           id="basic-button"
@@ -83,31 +92,28 @@ export default function Category({ childCategoryData, setChlidCategoryId }) {
             Reset
           </Typography>
           <Divider />
-          {childCategoryData?.map((item, index) => (
-            <MenuItem
-              //    onClick={handleClose}
-              key={index}
+          {childCategoryData?.length > 0 ? (
+            childCategoryData?.map((item, index) => (
+              <MenuItem key={index}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={selectedCategory === item?.categoryId}
+                      onChange={(e) => handleSelectChildCategory(e, item)}
+                    />
+                  }
+                  label={item?.categoryName}
+                />
+              </MenuItem>
+            ))
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{ textAlign: "center", margin: "1rem auto" }}
             >
-              <FormControlLabel
-                //   required
-                control={
-                  <Checkbox
-                    onClick={(e) =>
-                      handleSelectChildCategory(e, item?.categoryId)
-                    }
-                  />
-                }
-                label={item?.categoryName}
-              />
-            </MenuItem>
-          ))}
-          {/* <MenuItem>
-          <FormControlLabel
-            //   required
-            control={<Checkbox />}
-            label="Out of stock"
-          />
-        </MenuItem> */}
+              No Category found
+            </Typography>
+          )}
         </Menu>
       </div>
     </Box>

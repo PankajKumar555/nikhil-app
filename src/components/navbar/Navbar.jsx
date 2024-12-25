@@ -1,102 +1,35 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SideDrawer from "../drawer/Drawer";
 import { useNavigate } from "react-router";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Autocomplete, createFilterOptions, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { endpoints, fetchData } from "../../api/apiMethod";
-import SearchProducts from "../generic-component/search-product/SearchProducts";
 import LoginPopup from "../login/LoginPopup";
-
-// const Search = styled("div")(({ theme }) => ({
-//   position: "relative",
-//   borderRadius: "10rem",
-//   backgroundColor: alpha(theme.palette.common.white, 1),
-//   border: "1px solid gray",
-//   // "&:hover": {
-//   //   backgroundColor: alpha(theme.palette.common.black, 0.25),
-//   // },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   margin: "1.5rem auto",
-//   width: "100%",
-//   [theme.breakpoints.up("sm")]: {
-//     marginLeft: theme.spacing(3),
-//     width: "auto",
-//   },
-// }));
-
-// const SearchIconWrapper = styled("div")(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: "100%",
-//   position: "absolute",
-//   pointerEvents: "none",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-// }));
-
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: "inherit",
-//   "& .MuiInputBase-input": {
-//     padding: theme.spacing(1.2, 1.2, 1.2, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create("width"),
-//     width: "100%",
-//     [theme.breakpoints.up("md")]: {
-//       width: "50ch",
-//     },
-//   },
-// }));
-
-// const top100Films = [
-//   { title: "The Shawshank Redemption", year: 1994 },
-//   { title: "The Godfather", year: 1972 },
-//   { title: "The Godfather: Part II", year: 1974 },
-//   { title: "The Dark Knight", year: 2008 },
-//   { title: "12 Angry Men", year: 1957 },
-//   { title: "Schindler's List", year: 1993 },
-//   { title: "Pulp Fiction", year: 1994 },
-// ];
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
-  // const [keyWord, setKeyWord] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [optionList, setOptionList] = React.useState([]);
-  // const [openSearchDialog, setOpenSearchDialog] = React.useState(false);
-  // const [searchServiceList, setSearchServiceList] = React.useState([]);
-
-  // const [serviceName, setServiceName] = React.useState("");
-
   const route = useNavigate();
-  // const filter = createFilterOptions();
-  // const [close, setClose] = React.useState();
+
   const uniqueKeyOptions = optionList?.map((item, index) => ({
     id: index,
     label: item,
   }));
-
-  console.log("---------value", inputValue);
 
   React.useEffect(() => {
     if (inputValue) {
@@ -105,9 +38,7 @@ export default function Navbar() {
           const result = await fetchData(
             endpoints.getProductListByNameSearch + inputValue
           );
-          console.log("---------resultSearch", result);
           setOptionList(result?.list);
-          // setCategoryData(result?.list);
         } catch (error) {
           console.error("Error fetching category data:", error);
         }
@@ -115,26 +46,7 @@ export default function Navbar() {
 
       loadSearchData();
     }
-  }, [inputValue]); // Re-run when the slug changes
-
-  // React.useEffect(() => {
-  //   if (serviceName) {
-  //     const loadSearchData = async () => {
-  //       try {
-  //         const result = await fetchData(
-  //           endpoints.getSearchProducts + serviceName
-  //         );
-  //         console.log("---------serviceName", result);
-  //         setSearchServiceList(result?.list);
-  //         // setCategoryData(result?.list);
-  //       } catch (error) {
-  //         console.error("Error fetching service Name:", error);
-  //       }
-  //     };
-
-  //     loadSearchData();
-  //   }
-  // }, [serviceName]); // Re-run when the slug changes
+  }, [inputValue]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -167,7 +79,6 @@ export default function Navbar() {
     route("/");
   };
   const handleLogin = () => {
-    // route("/login");
     setOpenLogin(true);
     setAnchorEl(null);
     handleMobileMenuClose();
@@ -189,10 +100,6 @@ export default function Navbar() {
   };
 
   const handleSelectedSearchService = (serviceName) => {
-    console.log("---------search", serviceName);
-    // setOpenSearchDialog(true);
-    // setServiceName(serviceName);
-    // route("/products/productName/:slug");
     route(`/products/productName/${serviceName}`);
   };
 
@@ -200,16 +107,8 @@ export default function Navbar() {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      // anchorOrigin={{
-      //   vertical: "top",
-      //   horizontal: "right",
-      // }}
       id={menuId}
       keepMounted
-      // transformOrigin={{
-      //   vertical: "top",
-      //   horizontal: "right",
-      // }}
       open={isMenuOpen}
       onClose={handleMenuClose}
       slotProps={{
@@ -243,7 +142,6 @@ export default function Navbar() {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={handleLogin} sx={{ width: "10rem" }}>
         Login
       </MenuItem>
@@ -269,14 +167,6 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {/* <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem> */}
       <MenuItem>
         <IconButton
           size="large"
@@ -287,7 +177,6 @@ export default function Navbar() {
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-        {/* <p>Notifications</p> */}
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -345,16 +234,6 @@ export default function Navbar() {
             MUI
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          {/* <Search>
-            <SearchIconWrapper>
-              <SearchIcon sx={{ color: "black" }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search Products"
-              inputProps={{ "aria-label": "search" }}
-              sx={{ color: "#000" }}
-            />
-          </Search> */}
           <Autocomplete
             freeSolo={true}
             onInputChange={(event, newInputValue, reason) => {
@@ -367,7 +246,6 @@ export default function Navbar() {
             }}
             onChange={(event, newValue) => {
               if (newValue) {
-                // Update input value with full label of the selected option
                 handleSelectedSearchService(newValue?.label);
               }
             }}
@@ -383,29 +261,18 @@ export default function Navbar() {
               return option?.label ?? "";
             }}
             renderOption={(props, option) => (
-              <Box
-                component="li"
-                {...props}
-                key={option?.id}
-                // onClick={() => handleSelectedSearchService(option?.label)}
-              >
+              <Box component="li" {...props} key={option?.id}>
                 <Typography variant="body1">{option?.label}</Typography>
               </Box>
             )}
             sx={{
               width: "35%",
-              // borderRadius: "10rem", // Set border radius here
-              // border: "1px solid #000", // Set border color
               "& .MuiOutlinedInput-root": {
-                // border: "1px solid #000",
                 borderRadius: "20rem",
               },
               "& .MuiOutlinedInput-input": {
-                color: "#000", // Set text color inside the input field
+                color: "#000",
               },
-              // "& .MuiAutocomplete-listbox": {
-              //   backgroundColor: "red", // Set background color for the dropdown
-              // },
             }}
             renderInput={(params) => (
               <TextField {...params} label="Search Item..." />
@@ -413,15 +280,6 @@ export default function Navbar() {
           />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {/* <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton> */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -460,14 +318,6 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {/* <SearchProducts
-        openSearchDialog={openSearchDialog}
-        handleCloseSearchDialog={() => setOpenSearchDialog(false)}
-        searchServiceList={searchServiceList}
-        setSearchServiceList={setSearchServiceList}
-        setServiceName={setServiceName}
-        setInputValue={setInputValue}
-      /> */}
       <LoginPopup open={openLogin} setOpen={setOpenLogin} />
     </Box>
   );

@@ -17,7 +17,6 @@ import {
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 function ProfilePage() {
-  // State for user details and address
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
   const [phone, setPhone] = useState("1234567890");
@@ -28,9 +27,7 @@ function ProfilePage() {
   ]);
 
   const [profilePic, setProfilePic] = useState(null);
-  const [error, setError] = useState(""); // For validation error
-
-  // State for managing address change dialog
+  const [error, setError] = useState("");
   const [openAddressDialog, setOpenAddressDialog] = useState(false);
   const [newAddress, setNewAddress] = useState("");
   const [editingAddress, setEditingAddress] = useState(null);
@@ -98,8 +95,6 @@ function ProfilePage() {
       setError("All fields are required.");
       return;
     }
-
-    // Simulate save logic (e.g., send updated data to the server)
     alert("Profile updated successfully!");
   };
 
@@ -109,18 +104,6 @@ function ProfilePage() {
         mt: 2,
       }}
     >
-      {/* <Box
-        sx={{
-          margin: "auto",
-          width: "100%",
-          textAlign: "center",
-          mt: 5,
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Profile
-        </Typography>
-      </Box> */}
       <Grid container spacing={3} mt={5} margin="auto">
         {/* Left Section: Profile Picture */}
         <Grid item xs={12} sm={5} container justifyContent="center">
@@ -151,7 +134,6 @@ function ProfilePage() {
         {/* Right Section: User Details and Address */}
         <Grid item xs={12} sm={5} margin="auto">
           <Box>
-            {/* Name, Email, Phone */}
             <TextField
               fullWidth
               label="Full Name"

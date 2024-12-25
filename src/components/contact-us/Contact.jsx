@@ -1,29 +1,10 @@
 import React from "react";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Box,
-  Grid,
-  Paper,
-  Divider,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import EmailIcon from "@mui/icons-material/Email";
-import PersonIcon from "@mui/icons-material/Person";
-import MessageIcon from "@mui/icons-material/Message";
 import MapIcon from "@mui/icons-material/Map";
 import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import "./contact.css";
 
 const ContactUs = () => {
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     alert("Message sent!");
-  //   };
-
   return (
     <section classNameName="contact-page-sec">
       <div className="container">
@@ -32,7 +13,6 @@ const ContactUs = () => {
             <div className="contact-info">
               <div className="contact-info-item">
                 <div className="contact-info-icon">
-                  {/* <i className="fas fa-map-marked"></i> */}
                   <MapIcon />
                 </div>
                 <div className="contact-info-text">
@@ -47,7 +27,6 @@ const ContactUs = () => {
             <div className="contact-info">
               <div className="contact-info-item">
                 <div className="contact-info-icon">
-                  {/* <i className="fas fa-envelope"></i> */}
                   <LocalPostOfficeIcon />
                 </div>
                 <div className="contact-info-text">
@@ -62,7 +41,6 @@ const ContactUs = () => {
             <div className="contact-info">
               <div className="contact-info-item">
                 <div className="contact-info-icon">
-                  {/* <i className="fas fa-clock"></i> */}
                   <WatchLaterIcon />
                 </div>
                 <div className="contact-info-text">
@@ -127,6 +105,7 @@ const ContactUs = () => {
           <div className="col-md-4">
             <div className="contact-page-map">
               <iframe
+                title="test"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109741.02912911311!2d76.69348873658222!3d30.73506264436677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fed0be66ec96b%3A0xa5ff67f9527319fe!2sChandigarh!5e0!3m2!1sen!2sin!4v1553497921355"
                 width="100%"
                 height="450"

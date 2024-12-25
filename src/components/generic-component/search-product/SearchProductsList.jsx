@@ -1,13 +1,6 @@
 import * as React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
-import {
-  Box,
-  Divider,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Button,
-} from "@mui/material";
+import { Box, Divider, Typography, Button } from "@mui/material";
 import { currencySymbol } from "../helper-function/HelperFunction";
 import { useNavigate } from "react-router";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -23,7 +16,6 @@ const SearchProductsList = ({ item, setInputValue, handleCloseDialog }) => {
     route(`/categories/${item?.productCategory}/products/${item?.productId}`);
     handleCloseDialog();
     setInputValue("");
-    // setViewDetails(item);
   };
 
   React.useEffect(() => {
@@ -159,23 +151,18 @@ const SearchProductsList = ({ item, setInputValue, handleCloseDialog }) => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-evenly",
-                  // width: "7rem",
-                  // background: "#15741a",
                   border: "1px solid gray",
                   color: "black",
                   boxShadow: "none",
                   textTransform: "capitalize",
                   minWidth: "7rem",
-                  // background: "#15741a",
                   borderRadius: "5rem",
                   height: "36px",
                   width: "100%",
-                  // margin: "0.5rem 0px",
                 }}
               >
                 <RemoveIcon
                   onClick={(e) => handleValueDecrease(e, item)}
-                  // sx={{ cursor: value === 1 ? "not-allowed" : "pointer" }}
                   sx={{ cursor: "pointer" }}
                 />
                 <Typography>{value}</Typography>
@@ -198,7 +185,6 @@ const SearchProductsList = ({ item, setInputValue, handleCloseDialog }) => {
                   width: "100%",
                 }}
                 onClick={(e) => handleClickButton(e, item)}
-                // onClick={handleValueIncrease}
               >
                 Add To Cart
               </Button>

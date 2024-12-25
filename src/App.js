@@ -51,7 +51,7 @@ function App() {
         <Route path="/" element={<Body />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/categories/:slug" element={<First />} />
-        <Route path="/identifier/:slug" element={<Identifier />} />
+        <Route path="/identifier/:slug" element={<First />} />
         <Route path="/categories/:slug/products/:slug" element={<Product />} />
         <Route path="/all-products" element={<First />} />
         <Route path="/products/productName/:slug" element={<First />} />

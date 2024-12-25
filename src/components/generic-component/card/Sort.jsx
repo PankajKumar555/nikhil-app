@@ -24,14 +24,11 @@ export default function Sort({ onSort }) {
           <Select
             value={value}
             onChange={handleChange}
-            // displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             input={
               <InputBase
                 sx={{
                   border: "none",
-                  //   "&:before": { borderBottom: "none" },
-                  //   "&:after": { borderBottom: "none" },
                 }}
               />
             }
@@ -52,7 +49,6 @@ export default function Sort({ onSort }) {
               Z to A
             </MenuItem>
           </Select>
-          {/* <FormHelperText>Without label</FormHelperText> */}
         </FormControl>
       </div>
     </Box>

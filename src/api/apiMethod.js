@@ -1,7 +1,5 @@
 import axiosInstance from "./config";
 
-// const getAllCategories = "/category/get-parent-categories"
-
 export const endpoints = {
   getAllCategories: "/category/get-parent-categories",
   getChildCategories: "category/get-child-categories?parentId=",
@@ -24,10 +22,10 @@ export const endpoints = {
 export const fetchData = async (endpoint) => {
   try {
     const response = await axiosInstance.get(endpoint);
-    return response.data; // You can modify this based on how the API responds
+    return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
-    throw error; // Rethrow the error or handle it accordingly
+    throw error;
   }
 };
 
@@ -39,9 +37,9 @@ export const postData = async (endpoint, data) => {
         "Content-Type": "application/json",
       },
     });
-    return response?.data; // You can modify this based on how the API responds
+    return response?.data;
   } catch (error) {
     console.error("Error posting data:", error);
-    throw error; // Rethrow the error or handle it accordingly
+    throw error;
   }
 };

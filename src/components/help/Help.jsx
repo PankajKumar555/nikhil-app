@@ -1,4 +1,3 @@
-// Help.js
 import React from "react";
 import {
   Container,
@@ -8,8 +7,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  AppBar,
-  Toolbar,
   Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";

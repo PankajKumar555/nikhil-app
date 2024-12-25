@@ -6,10 +6,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"; // Arrow icon for dropdown
-import { Collapse } from "@mui/material"; // For collapsible submenus
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Collapse } from "@mui/material";
 import { useNavigate } from "react-router";
 import { endpoints, fetchData } from "../../api/apiMethod";
 import QuizIcon from "@mui/icons-material/Quiz";
@@ -18,10 +16,9 @@ import "./index.css";
 
 const SideDrawer = ({ handleOpen, setClose }) => {
   const navigate = useNavigate();
-
-  const [openDrafts, setOpenDrafts] = React.useState(false); // State to control "Drafts" dropdown
-  const [openSubMenu, setOpenSubMenu] = React.useState(null); // State for controlling which category's submenu is open
-  const [data, setData] = React.useState([]); // State for sub-menu
+  const [openDrafts, setOpenDrafts] = React.useState(false);
+  const [openSubMenu, setOpenSubMenu] = React.useState(null);
+  const [data, setData] = React.useState([]);
 
   const toggleDrawer = () => {
     setClose(false);
@@ -33,22 +30,18 @@ const SideDrawer = ({ handleOpen, setClose }) => {
   };
 
   const toggleSubMenu = (categoryId) => {
-    // Toggle the submenu for the clicked category
-    setOpenSubMenu((prev) => (prev === categoryId ? null : categoryId)); // If the same submenu is clicked, close it, otherwise open the new one
+    setOpenSubMenu((prev) => (prev === categoryId ? null : categoryId));
   };
 
   React.useEffect(() => {
-    // Fetching data when the component mounts
     const loadData = async () => {
       try {
-        const result = await fetchData(endpoints.getAllCategoriesByDropdown); // Replace '/items' with your actual endpoint
-        console.log("dropdown----->>>>", result);
+        const result = await fetchData(endpoints.getAllCategoriesByDropdown);
         setData(result?.list);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     loadData();
   }, []);
 
@@ -59,7 +52,6 @@ const SideDrawer = ({ handleOpen, setClose }) => {
           <ListItem
             key={text}
             disablePadding
-            // onClick={() => handleNavigate(text)}
             onClick={() => handleNavigate(index === 0 ? "/" : "all-products")}
           >
             <ListItemButton>
@@ -72,7 +64,6 @@ const SideDrawer = ({ handleOpen, setClose }) => {
         <ListItem disablePadding onClick={() => setOpenDrafts(!openDrafts)}>
           <ListItemButton>
             <ListItemText primary="🗂️  All Categories" />
-            {/* Arrow Icon to indicate dropdown */}
             <ListItemIcon>
               <ExpandMoreIcon
                 sx={{
@@ -90,7 +81,6 @@ const SideDrawer = ({ handleOpen, setClose }) => {
             {data &&
               data.map((item) => (
                 <div key={item.categoryId}>
-                  {/* Category Item */}
                   <ListItem
                     sx={{
                       padding: "4px 16px",
@@ -101,16 +91,14 @@ const SideDrawer = ({ handleOpen, setClose }) => {
                     }
                   >
                     <ListItemText primary={item.categoryName} sx={{ pl: 4 }} />
-                    {/* Show dropdown arrow only if there are child categories */}
                     {item.childCategories &&
                       item.childCategories.length > 0 && (
                         <ListItemIcon>
                           <ExpandMoreIcon
                             onClick={(event) => {
-                              event.stopPropagation(); // Prevent the click event from reaching the parent ListItem
-                              toggleSubMenu(item.categoryId); // Toggle the submenu for this category
+                              event.stopPropagation();
+                              toggleSubMenu(item.categoryId);
                             }}
-                            // onClick={() => toggleSubMenu(item.categoryId)} // Toggle the submenu for this category
                             sx={{
                               transform:
                                 openSubMenu === item.categoryId

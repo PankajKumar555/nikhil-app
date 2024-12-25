@@ -15,7 +15,6 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    // setPriceRange((prev) => ({ ...prev, min: null, max: null }));
   };
 
   const handleMinChange = (event) => {
@@ -25,12 +24,16 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
 
   const handleMaxChange = (event) => {
     const newMax = event.target.value;
-    setPriceRange((prev) => ({ ...prev, max: newMax }));
+    if (newMax > minPrice) {
+      setPriceRange((prev) => ({ ...prev, max: newMax }));
+    } else {
+      alert("You can't choose max price less than min price.");
+    }
   };
 
   const handleReset = () => {
-    setPriceRange({ min: null, max: null }); // Remove all filters
-    handleClose(); // Close the menu
+    setPriceRange({ min: null, max: 10000 });
+    handleClose();
   };
 
   return (

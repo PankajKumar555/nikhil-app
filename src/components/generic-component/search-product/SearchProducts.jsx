@@ -1,30 +1,15 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Divider,
   IconButton,
   Skeleton,
-  Typography,
   useMediaQuery,
   useTheme,
-  Button,
 } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import { currencySymbol } from "../helper-function/HelperFunction";
-import { useNavigate } from "react-router";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import { addToCart, checkIfAvailable } from "../helper-function/cart";
 import SearchProductsList from "./SearchProductsList";
-// import ViewDetails from "../genericComponents/view-details/ViewDetails";
-// import { FormatedTime } from "../genericComponents/formated-time/FormatedTime";
-// import { getCurrencyCode } from "../genericComponents/helper-functions/currencyCode";
-// import { ViewDetailsServices } from "@/app/classes/main";
 
 const SearchProducts = ({
   openSearchDialog,
@@ -33,7 +18,6 @@ const SearchProducts = ({
   setSearchServiceList,
   setServiceName,
   setInputValue,
-  //   setReloadCartService,
 }) => {
   const theme = useTheme();
   const screenWidth = useMediaQuery(theme.breakpoints.down("sm"));

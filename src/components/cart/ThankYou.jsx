@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectCartId } from "../../redux/slice/orderSlice";
+import { selectOrderId } from "../../redux/slice/orderIdSlice";
 import {
   Box,
   Typography,
-  Card,
-  CardContent,
   Button,
-  Avatar,
-  Grid,
-  Chip,
   TableContainer,
   Table,
   TableHead,
@@ -18,10 +13,8 @@ import {
   TableBody,
   Paper,
 } from "@mui/material";
-import { endpoints, fetchData, postData } from "../../api/apiMethod";
-import { Link } from "@mui/material";
+import { endpoints, fetchData } from "../../api/apiMethod";
 import { styled } from "@mui/system";
-import EmailIcon from "@mui/icons-material/Email";
 import ThankYou from "../../assets/thank-you.jpeg";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useNavigate } from "react-router";
@@ -51,38 +44,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const ThankYouPage = () => {
   const [orderData, setOrderData] = useState();
-  const cartId = useSelector(selectCartId); // Access the cartId from Redux
+  const orderId = useSelector(selectOrderId); // Access the orderId from Redux
   const router = useNavigate();
-  console.log("-----cartIdThank", cartId);
 
   React.useEffect(() => {
-    if (cartId) {
-      const getCartDetails = async () => {
-        try {
-          const result = await fetchData(endpoints.getCartDetails + cartId);
-          setOrderData(result?.data);
-        } catch (error) {
-          console.error("Error fetching category data:", error);
-        }
-      };
-
-      getCartDetails(); // Call the async function
-    }
-  }, [cartId]);
-
-  React.useEffect(() => {
-    if (cartId) {
+    if (orderId) {
       const getOrderDetails = async () => {
         try {
-          const result = await fetchData(endpoints.getOrderDetails + cartId);
-          // setOrderData(result?.data);
+          const result = await fetchData(endpoints.getOrderDetails + orderId);
+          setOrderData(result?.data);
         } catch (error) {
           console.error("Error fetching category data:", error);
         }
       };
       getOrderDetails(); // Call the async function
     }
-  }, [cartId]);
+  }, [orderId]);
 
   const handleNavigateHome = () => {
     router("/");
@@ -92,46 +69,184 @@ const ThankYouPage = () => {
     router("/contact-us");
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.width; // Get the page width
-    const rightMargin = 15; // Right margin offset
+    const pageWidth = doc.internal.pageSize.width;
+    const rightMargin = 15;
 
-    // Adding company logo and name with the date at the top of the PDF
-    doc.addImage(ThankYou, "JPEG", 15, 10, 30, 30); // Replace with actual company logo
+    // Add logo and company details
+    const logoWidth = 30;
+    const logoHeight = 35;
+    const logoX = 15;
+    const logoY = 10;
+    const companyNameX = 90;
+    const companyNameY = 30;
+
+    doc.addImage(ThankYou, "JPEG", logoX, logoY, logoWidth, logoHeight);
     doc.setFontSize(16);
-    doc.text("Your Company Name", 70, 30);
+    doc.text("Shubhiksha", companyNameX, companyNameY);
+
+    // Add date
+    doc.setFontSize(10);
+    doc.text(
+      new Date().toLocaleDateString(),
+      pageWidth - rightMargin,
+      companyNameY,
+      {
+        align: "right",
+      }
+    );
+
+    // Add customer details
+    const detailsStartY = logoY + logoHeight + 10;
+    doc.setFontSize(11);
+    doc.text(`Name: ${orderData?.custName}`, 15, detailsStartY);
+    doc.text(`Phone: ${orderData?.custPhone}`, 15, detailsStartY + 5);
+    doc.text(`Email: ${orderData?.custEmail}`, 15, detailsStartY + 10);
+    doc.text(`Order ID: ${orderData?.orderId}`, 15, detailsStartY + 15);
+
+    // Add customer address
+    const addressStartY = detailsStartY + 25;
     doc.setFontSize(12);
-    doc.text(new Date().toLocaleDateString(), 170, 30);
+    doc.text("Address:", 15, addressStartY);
+    doc.setFontSize(11);
+    doc.text(`House: ${orderData?.custAddress}`, 15, addressStartY + 5);
+    doc.text(`City: ${orderData?.custCity}`, 15, addressStartY + 10);
+    doc.text(`State: ${orderData?.custState}`, 15, addressStartY + 15);
+    doc.text(`Pincode: ${orderData?.custPincode}`, 15, addressStartY + 20);
+    doc.text(`GST: ${orderData?.custGst}`, 15, addressStartY + 25);
 
-    // Add a new line for user info
-    doc.setFontSize(11); // Font size for 'Order ID'
-    doc.text(`Name: ${"Pankaj"}`, 15, 50);
-    doc.text(`Phone: ${"123456789"}`, 15, 55);
-    doc.text(`Email: ${"test@gmail.com"}`, 15, 60);
-    doc.text(`Order ID: ${orderData?.cartId}`, 15, 65);
-
-    // const userInfo = orderData.userInfo; // Assuming userInfo contains name, phone, email, and orderId
-    const tableColumn = ["#", "Product ID", "Qty", "Unit Price"];
+    // Prepare the table columns
+    const tableColumn = [
+      "#",
+      "Product ID",
+      "Product Name",
+      "Image",
+      "Unit Price",
+      "Qty",
+      "Total Price",
+    ];
     const tableRows = [];
 
-    orderData?.productList.forEach((item, index) => {
-      const row = [index + 1, item.productId, item.noOfUnit, item.unitPrice];
-      tableRows.push(row);
-    });
+    // Function to fetch the image in base64 format
+    const fetchImageBase64 = async (url) => {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        console.error("Error fetching image:", error);
+        return ""; // Return empty string if there's an error
+      }
+    };
 
-    doc.autoTable({
+    // Add product details to the table rows
+    for (const [
+      index,
+      item,
+    ] of orderData?.cartDetails?.productList?.entries()) {
+      if (item?.productImg) {
+        const imageBase64 = await fetchImageBase64(item?.productImg);
+        tableRows.push([
+          index + 1,
+          item?.productId,
+          item?.productName,
+          imageBase64, // Store Base64 for the image
+          item.unitPrice,
+          item.noOfUnit,
+          item.unitPrice * item.noOfUnit,
+        ]);
+      } else {
+        tableRows.push([
+          index + 1,
+          item?.productId,
+          item?.productName,
+          "", // No image if not available
+          item.unitPrice,
+          item.noOfUnit,
+          item.unitPrice * item.noOfUnit,
+        ]);
+      }
+    }
+
+    // Add the table with the fetched images
+    const tableStartY = addressStartY + 35;
+
+    await doc.autoTable({
       head: [tableColumn],
-      body: tableRows,
-      startY: 75,
+      body: tableRows.map((row) => {
+        const [
+          index,
+          productId,
+          productName,
+          imageBase64,
+          unitPrice,
+          qty,
+          totalPrice,
+        ] = row;
+        return [
+          index,
+          productId,
+          productName,
+          "", // Placeholder for the image
+          unitPrice,
+          qty,
+          totalPrice,
+        ];
+      }),
+      startY: tableStartY,
+      styles: {
+        minCellHeight: 15, // Set minimum cell height for rows
+      },
+      didDrawCell: (data) => {
+        console.log("Cell Data:", data); // Log the cell data to check its structure
+
+        if (
+          data?.column?.index === 3 && // Check if it's the "Image" column
+          data?.row?.section === "body" // Ensure it's a body row
+        ) {
+          const rowIndex = data.row.index;
+          const imageBase64 = tableRows[rowIndex]
+            ? tableRows[rowIndex][3]
+            : null;
+          const cellHeight = data.cell.height;
+          const cellWidth = data.cell.width;
+
+          if (imageBase64) {
+            const imgWidth = 10; // Desired image width
+            const imgHeight = 10; // Desired image height
+
+            const x = data.cell.x + (cellWidth - imgWidth) / 2; // Center align horizontally
+            const y = data.cell.y + (cellHeight - imgHeight) / 2; // Center align vertically
+
+            try {
+              doc.addImage(
+                imageBase64,
+                "JPEG",
+                x,
+                y,
+                imgWidth,
+                imgHeight,
+                undefined,
+                "FAST"
+              );
+            } catch (err) {
+              console.error("Error adding image:", err);
+            }
+          }
+        }
+      },
     });
 
-    // Calculate Y-position below the table
-    const tableEndY = doc.lastAutoTable.finalY + 5;
-
-    // Add discount and total amount below the table
-    const discount = orderData?.discount || 0; // Add discount from your data
-    const totalAmount = orderData?.totalAmount || 0; // Add total amount from your data
+    // Add summary below the table
+    const tableEndY = doc.lastAutoTable.finalY + 10;
+    const discount = orderData?.discount || 0;
+    const totalAmount = orderData?.orderAmount || 0;
 
     doc.setFontSize(12);
     doc.text(`Discount: ${discount}`, pageWidth - rightMargin, tableEndY, {
@@ -140,21 +255,19 @@ const ThankYouPage = () => {
     doc.text(
       `Total Amount: ${totalAmount}`,
       pageWidth - rightMargin,
-      tableEndY + 8,
+      tableEndY + 10,
       {
         align: "right",
       }
     );
 
     // Save the PDF
-    doc.save(`Invoice_${orderData?.cartId}.pdf`);
+    doc.save(`Invoice_${orderData?.orderId}.pdf`);
   };
 
   return (
     <StyledContainer>
-      {/* Icon */}
       <Box mb={1} mt={1}>
-        {/* <EmailIcon sx={{ fontSize: 100, color: "#ff5e5e" }} /> */}
         <img
           src={ThankYou}
           alt="Thank You"
@@ -164,14 +277,10 @@ const ThankYouPage = () => {
           }}
         />
       </Box>
-
-      {/* Main Text */}
       <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
         Thank you for shooping!
       </Typography>
       <br />
-
-      {/* Subtitle */}
       <Box
         sx={{
           display: "flex",
@@ -196,7 +305,7 @@ const ThankYouPage = () => {
         sx={{
           margin: "20px auto",
           maxWidth: "90%",
-          "&::-webkit-scrollbar": { display: "none" }, // Hides the scrollbar for webkit browsers
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
         <Typography variant="h6" sx={{ padding: "16px" }}>
@@ -207,13 +316,16 @@ const ThankYouPage = () => {
             <TableRow>
               <TableCell>#</TableCell>
               <TableCell>Product ID</TableCell>
-              <TableCell>Qty</TableCell>
+              <TableCell>Product Name</TableCell>
+              <TableCell>Image</TableCell>
               <TableCell>Unit Price</TableCell>
+              <TableCell>Qty</TableCell>
+              <TableCell>Total price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orderData &&
-              orderData.productList.map((item, index) => (
+              orderData?.cartDetails?.productList.map((item, index) => (
                 <TableRow
                   key={item.productId}
                   sx={{
@@ -222,19 +334,28 @@ const ThankYouPage = () => {
                   }}
                 >
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{item.productId}</TableCell>
-                  <TableCell>{item.noOfUnit}</TableCell>
-                  <TableCell>{item.unitPrice}</TableCell>
+                  <TableCell>{item?.productId}</TableCell>
+                  <TableCell>{item?.productName}</TableCell>
+                  <TableCell>
+                    <img
+                      src={item?.productImg}
+                      alt={item?.productName}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>{item?.unitPrice}</TableCell>
+                  <TableCell>{item?.noOfUnit}</TableCell>
+                  <TableCell>{item?.unitPrice * item?.noOfUnit}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* Back Home Button */}
       <StyledButton onClick={handleNavigateHome}>← Back Home</StyledButton>
-
-      {/* Contact Link */}
       <Box mt={4}>
         <Typography variant="body2">
           If you have any issues{" "}

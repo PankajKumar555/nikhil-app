@@ -10,9 +10,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { endpoints, fetchData, postData } from "../../api/apiMethod";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { setCartId } from "../../redux/slice/orderSlice";
+import { setCartId } from "../../redux/slice/cartIdSlice";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { currencySymbol } from "../generic-component/helper-function/HelperFunction";
+import { setOrderId } from "../../redux/slice/orderIdSlice";
 
 const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
   const [formData, setFormData] = React.useState({
@@ -51,20 +52,16 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
         noOfUnit: item.count,
         unitPrice: item.unitPrice,
       }));
-      console.log("---payload", payload);
       const getCartDetails = async () => {
         try {
           const result = await postData(endpoints.saveCartDetails, payload);
           setOrderCartId(result?.data);
           dispatch(setCartId(result?.data)); // Save the cartId to the Redux store
-          // console.log("cartresult-----", result);
-          // setCartId(result?.data);
         } catch (error) {
           console.error("Error fetching category data:", error);
         }
       };
-
-      getCartDetails(); // Call the async function
+      getCartDetails();
     }
   }, [openPaymentdialog]);
 
@@ -80,8 +77,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
           console.error("Error fetching category data:", error);
         }
       };
-
-      getCartDetails(); // Call the async function
+      getCartDetails();
     }
   }, [orderCartId]);
 
@@ -91,15 +87,16 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
       orderAmt: orderData?.totalAmount,
       name: formData?.name,
       email: formData?.email,
-      mobile: formData?.phone,
+      mobile: +formData?.phone,
       address: formData?.streetAddress,
       city: formData?.city,
       state: formData?.state,
-      pincode: formData?.postalCode,
+      pincode: +formData?.postalCode,
       gst: formData?.gstin,
     };
     try {
-      await postData(endpoints.saveCartOrderDetails, payload);
+      const responce = await postData(endpoints.saveCartOrderDetails, payload);
+      dispatch(setOrderId(responce?.data)); // Save the cartId to the Redux store
     } catch (error) {
       console.error("Error fetching category data:", error);
     }
@@ -107,7 +104,6 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // Validate required fields
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
@@ -115,12 +111,10 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
         newErrors[key] = `${key} is required`;
       }
     });
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
     if (formData.phone.length !== 10) {
       setErrors({
         ...errors,
@@ -131,7 +125,6 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     handleSaveOrderDetails();
     console.log("Form Submitted Successfully:", formData);
     navigate("/thank-you");
-    // Add your submission logic here (e.g., API call)
   };
 
   return (

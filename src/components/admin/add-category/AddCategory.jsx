@@ -28,9 +28,8 @@ const AddCategory = ({ open, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here, you can handle form submission (e.g., send data to API)
     console.log("Form Data:", formData);
-    onClose(); // Close the dialog after submission
+    onClose();
   };
 
   return (

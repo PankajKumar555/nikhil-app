@@ -10,7 +10,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { RelatedProducts } from "./RelatedProducts";
-import { toast } from "react-toastify";
 import { currencySymbol } from "../generic-component/helper-function/HelperFunction";
 import {
   addToCart,
@@ -18,22 +17,12 @@ import {
 } from "../generic-component/helper-function/cart";
 
 const ImageSlider = ({ productDetails }) => {
-  console.log("---------product", productDetails);
-
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [zoomStyle, setZoomStyle] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isClicked, setIsClicked] = React.useState(false);
   const [value, setValue] = React.useState(1);
-  // console.log("value-----", value);
-
-  // const images = [
-  //   "https://images.unsplash.com/photo-1636572481914-a07d36917486?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3Jvb3R8ZW58MHx8MHx8fDA%3D",
-  //   "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   "https://images.unsplash.com/photo-1615989382340-2595ed787ae6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   "https://images.unsplash.com/photo-1524481905007-ea072534b820?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  // ];
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
@@ -50,15 +39,13 @@ const ImageSlider = ({ productDetails }) => {
 
   const handleThumbnailHover = (index) => {
     setCurrentIndex(index);
-    // nav1.slickGoTo(index);
   };
 
   React.useEffect(() => {
     const fetchCounts = async () => {
       try {
-        if (!productDetails?.productId) return; // Exit early if productId is missing or invalid
+        if (!productDetails?.productId) return;
         const jsonCount = await checkIfAvailable(productDetails?.productId);
-        console.log("----->>>jsonCount", jsonCount);
         if (jsonCount.count > 0) {
           setIsClicked(true);
           setValue(jsonCount.count);
@@ -69,8 +56,7 @@ const ImageSlider = ({ productDetails }) => {
         console.error("Error fetching count:", error);
       }
     };
-
-    fetchCounts(); // Call the async function
+    fetchCounts();
   }, [productDetails?.productId]);
 
   const handleClickButton = async (e) => {
@@ -124,7 +110,6 @@ const ImageSlider = ({ productDetails }) => {
     focusOnSelect: true,
     vertical: true,
     arrows: false,
-    // infinite: false,
   };
 
   const nextSlide = () => {
@@ -234,35 +219,24 @@ const ImageSlider = ({ productDetails }) => {
           <Typography variant="body2" sx={{ margin: "0.5rem 0px" }}>
             Shipping calculated at checkout.
           </Typography>
-          {/* <br /> */}
-          {/* <Typography variant="body1" sx={{ margin: "0.5rem 0px" }}>
-            Quantity
-          </Typography> */}
           {isClicked ? (
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-                // width: "7rem",
-                // background: "#15741a",
                 border: "1px solid gray",
                 color: "black",
-
                 boxShadow: "none",
                 textTransform: "capitalize",
-                // width: "7rem",
                 minWidth: "10px",
-                // background: "#15741a",
                 borderRadius: "10rem",
                 height: "45px",
                 width: "50%",
-                // margin: "0.5rem 0px",
               }}
             >
               <RemoveIcon
                 onClick={handleValueDecrease}
-                // sx={{ cursor: value === 1 ? "not-allowed" : "pointer" }}
                 sx={{ cursor: "pointer" }}
               />
               <Typography>{value}</Typography>
@@ -278,7 +252,6 @@ const ImageSlider = ({ productDetails }) => {
               sx={{
                 boxShadow: "none",
                 textTransform: "capitalize",
-                // width: "7rem",
                 minWidth: "10px",
                 background: "#15741a",
                 borderRadius: "10rem",
@@ -287,7 +260,6 @@ const ImageSlider = ({ productDetails }) => {
               }}
               onClick={handleClickButton}
               disabled={productDetails?.inStock === true ? false : true}
-              // onClick={handleValueIncrease}
             >
               Add To Cart
             </Button>

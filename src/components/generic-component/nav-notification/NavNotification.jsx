@@ -9,16 +9,16 @@ export const NavNotification = () => {
         textAlign: "center",
         padding: "1rem",
         margin: "auto",
-        overflow: "hidden", // Hide overflow
-        whiteSpace: "nowrap", // Prevent text from wrapping
+        overflow: "hidden",
+        whiteSpace: "nowrap",
       }}
     >
       <Typography
         variant="body1"
         sx={{
           color: "white",
-          display: "inline-block", // Allows for animation
-          animation: "marquee 50s linear infinite", // Animation for scrolling
+          display: "inline-block",
+          animation: "marquee 50s linear infinite",
         }}
       >
         Best Price Guarantee on Action Figures: If you find any action figure at
