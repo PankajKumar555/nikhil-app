@@ -126,6 +126,8 @@ export default function Navbar({ setReloadIsLoggedIn }) {
 
   const handleNavigateCart = () => {
     route("/cart");
+    setAnchorEl(null);
+    handleMobileMenuClose();
   };
 
   const handleSelectedSearchService = (serviceName) => {
@@ -215,6 +217,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleNavigateCart}>
+        Cart
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -224,7 +227,6 @@ export default function Navbar({ setReloadIsLoggedIn }) {
             <ShoppingCartIcon />
           </Badge>
         </IconButton>{" "}
-        &nbsp; &nbsp; Cart
       </MenuItem>
       {isLoggedIn === "true" ? (
         <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>

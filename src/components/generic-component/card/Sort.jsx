@@ -4,7 +4,7 @@ import { Box, FormControl, InputBase, Select, Typography } from "@mui/material";
 import "./index.css";
 
 export default function Sort({ onSort }) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState("none");
 
   const handleChange = (event) => {
     setValue(event.target.value);

@@ -64,7 +64,11 @@ export const First = () => {
   React.useEffect(() => {
     const loadChildCategoryData = async () => {
       try {
-        if (dynamicSlug !== undefined && dynamicSlug !== null && dynamicSlug) {
+        if (
+          dynamicSlug !== undefined &&
+          dynamicSlug !== null &&
+          !isNaN(dynamicSlug)
+        ) {
           const result = await fetchData(
             endpoints.getChildCategories + dynamicSlug
           );
@@ -269,7 +273,7 @@ export const First = () => {
                 sm={6}
                 md={4}
                 lg={3}
-                sx={{ margin: "auto", padding: "0.5rem" }}
+                sx={{ margin: "", padding: "0.5rem" }}
               >
                 <ProductCard data={data} />
               </Grid>

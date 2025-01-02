@@ -7,7 +7,7 @@ export const RelatedProducts = ({ productDetails }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    if (productDetails) {
+    if (productDetails?.relatedProducts) {
       const loadCategoryData = async () => {
         try {
           const result = await fetchData(

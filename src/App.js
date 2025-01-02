@@ -28,9 +28,9 @@ import "./App.css";
 
 function App() {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = React.useState("");
   const isAdminPage = location.pathname.startsWith("/admin");
   const is404Page = location.pathname === "/404";
-  const [isLoggedIn, setIsLoggedIn] = React.useState("");
   const [reloadIsLoggedIn, setReloadIsLoggedIn] = React.useState(false);
 
   React.useEffect(() => {

@@ -51,7 +51,7 @@ export const Body = () => {
                   sm={6}
                   md={4}
                   lg={3}
-                  sx={{ margin: "auto", padding: "0.5rem" }}
+                  sx={{ margin: "", padding: "0.5rem" }}
                   onClick={() => handleNavigate(item, index)}
                 >
                   <MainCard

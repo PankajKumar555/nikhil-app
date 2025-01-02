@@ -9,9 +9,7 @@ const countSlice = createSlice({
   initialState,
   reducers: {
     setCount: (state, action) => {
-      console.log("Dispatched setCount with payload:", action.payload);
-
-      state.count = action.payload; // Save count in the Redux store
+      state.count = action.payload;
     },
   },
 });

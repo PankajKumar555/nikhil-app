@@ -170,9 +170,8 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
               textAlign: "end",
             }}
           >
-            <IconButton>
+            <IconButton onClick={handleClosePaymentDialog}>
               <CloseIcon
-                onClick={handleClosePaymentDialog}
                 sx={{
                   cursor: "pointer",
                   color: "black",

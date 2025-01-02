@@ -9,8 +9,13 @@ import {
   Box,
   Divider,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import PersonIcon from "@mui/icons-material/Person";
 
 function LoginPopup({ open, setOpen, setReloadDropDown }) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -137,11 +142,11 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
       fullWidth
       maxWidth="sm"
       sx={{
-        maxWidth: "33rem", // Set max width to 33rem
+        maxWidth: "37rem", // Set max width to 33rem
         margin: "auto", // Center the dialog horizontally
       }}
     >
-      <DialogTitle>
+      <DialogTitle sx={{ textAlign: "center", fontSize: "24px" }}>
         {isSignUp ? "Sign Up" : "Login"}
         <IconButton
           onClick={() => setOpen(false)}
@@ -173,6 +178,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
             inputProps={{
               maxLength: isValidPhone(value) ? 10 : undefined, // Limit phone input to 10 digits
             }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <PhoneAndroidIcon />
+                </InputAdornment>
+              ),
+            }}
           />
 
           {/* Conditional fields based on the form (OTP for SignUp, Password for Login) */}
@@ -191,6 +203,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
                   }}
                   error={!!error}
                   helperText={error}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <VisibilityIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               ) : (
                 <Button
@@ -219,6 +238,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
               }}
               error={!!error}
               helperText={error}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <VisibilityOffIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
 
@@ -234,6 +260,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
                 sx={{
                   margin: "0px auto 8px",
                 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                }}
               />
               <TextField
                 fullWidth
@@ -244,6 +277,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
                 onChange={handlePasswordChange}
                 sx={{
                   margin: "0px auto 8px",
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <VisibilityOffIcon />
+                    </InputAdornment>
+                  ),
                 }}
               />
               <TextField
@@ -256,6 +296,13 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
                 sx={{
                   margin: "0px auto 8px",
                 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <VisibilityOffIcon />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </>
           )}
@@ -265,30 +312,39 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
         sx={{
           display: "inline-block",
           textAlign: "center",
+          padding: "0px 24px 8px",
         }}
       >
         <Box>
-          <Button
+          {/* <Button
             onClick={() => setOpen(false)}
             color="error"
             variant="outlined"
           >
             Cancel
           </Button>
-          &nbsp; &nbsp;
+          &nbsp; &nbsp; */}
           {/* Conditional buttons based on form (Send OTP or Submit OTP for SignUp, Login for Login) */}
           {!isSignUp ? (
             <Button
               onClick={handleLoginSubmit}
               color="success"
               variant="contained"
+              fullWidth
+              sx={{ borderRadius: "10rem" }}
             >
               Login
             </Button>
           ) : (
             <>
               {!otpSent ? (
-                <Button onClick={sendOtp} color="success" variant="contained">
+                <Button
+                  onClick={sendOtp}
+                  color="success"
+                  variant="contained"
+                  fullWidth
+                  sx={{ borderRadius: "10rem" }}
+                >
                   Send OTP
                 </Button>
               ) : (
@@ -296,6 +352,8 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
                   onClick={handleSubmitOtp}
                   color="success"
                   variant="contained"
+                  fullWidth
+                  sx={{ borderRadius: "10rem" }}
                 >
                   Submit
                 </Button>
@@ -305,7 +363,7 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
         </Box>
         <Divider
           sx={{
-            margin: "1rem",
+            margin: "1rem auto 4px",
             borderColor: "gray",
           }}
         />

@@ -95,40 +95,45 @@ export default function ProductCard({ data }) {
         },
       }}
     >
-      <CardActionArea
+      {/* <CardActionArea
         disableRipple
         sx={{
           "&:focus": { boxShadow: "none" },
         }}
+      > */}
+      <Box
+        sx={{
+          overflow: "hidden",
+          cursor: "pointer",
+        }}
+        onClick={() => handleNavigateToProduct(data)}
+      >
+        <CardMedia
+          component="img"
+          height="auto"
+          image={
+            data?.imageList[0]?.productImgUrl ??
+            "https://images.meesho.com/images/products/102639327/ieojq_512.webp"
+          }
+          alt={data?.imageList[0]?.productImgCaption ?? ""}
+          sx={{
+            transition: "transform 0.9s ease",
+            height: "14rem",
+            objectFit: "contain",
+            "&:hover": {
+              transform: "scale(1.05)",
+            },
+          }}
+        />
+      </Box>
+      <CardContent
+        sx={{
+          cursor: "default !important",
+        }}
       >
         <Box
-          sx={{
-            overflow: "hidden",
-          }}
-        >
-          <CardMedia
-            component="img"
-            height="auto"
-            image={
-              data?.imageList[0]?.productImgUrl ??
-              "https://images.meesho.com/images/products/102639327/ieojq_512.webp"
-            }
-            alt={data?.imageList[0]?.productImgCaption ?? ""}
-            sx={{
-              transition: "transform 0.9s ease",
-              height: "14rem",
-              objectFit: "contain",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
-            onClick={() => handleNavigateToProduct(data)}
-          />
-        </Box>
-        <CardContent
-          sx={{
-            cursor: "default !important",
-          }}
+          onClick={() => handleNavigateToProduct(data)}
+          sx={{ cursor: "pointer" }}
         >
           <Typography
             variant="body2"
@@ -207,57 +212,59 @@ export default function ProductCard({ data }) {
               </Typography>
             )}
           </Box>
-          <Box>
-            {isClicked ? (
-              <Box
+        </Box>
+
+        <Box>
+          {isClicked ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                width: "100%",
+                border: "1px solid #15741a",
+                borderRadius: "4px",
+                color: "#15741a",
+                padding: "6px 20px",
+              }}
+            >
+              <RemoveIcon
+                onClick={handleValueDecrease}
+                sx={{ cursor: "pointer" }}
+              />
+              <Typography
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  width: "100%",
-                  border: "1px solid #15741a",
-                  borderRadius: "4px",
-                  color: "#15741a",
-                  padding: "6px 20px",
+                  fontSize: "16px",
                 }}
               >
-                <RemoveIcon
-                  onClick={handleValueDecrease}
-                  sx={{ cursor: "pointer" }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "16px",
-                  }}
-                >
-                  {value}
-                </Typography>
-                <AddIcon
-                  onClick={handleValueIncrease}
-                  sx={{ cursor: "pointer" }}
-                />
-              </Box>
-            ) : (
-              <Button
-                variant="outlined"
-                sx={{
-                  textTransform: "capitalize",
-                  padding: "6px 20px",
-                  width: "100%",
-                  border: "1px solid #15741a",
-                  color: "#15741a",
-                  boxShadow: "none",
-                }}
-                color="success"
-                onClick={handleClickButton}
-                disabled={data?.inStock === true ? false : true}
-              >
-                Add to Cart
-              </Button>
-            )}
-          </Box>
-        </CardContent>
-      </CardActionArea>
+                {value}
+              </Typography>
+              <AddIcon
+                onClick={handleValueIncrease}
+                sx={{ cursor: "pointer" }}
+              />
+            </Box>
+          ) : (
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: "capitalize",
+                padding: "6px 20px",
+                width: "100%",
+                border: "1px solid #15741a",
+                color: "#15741a",
+                boxShadow: "none",
+              }}
+              color="success"
+              onClick={handleClickButton}
+              disabled={data?.inStock === true ? false : true}
+            >
+              Add to Cart
+            </Button>
+          )}
+        </Box>
+      </CardContent>
+      {/* </CardActionArea> */}
     </Card>
   );
 }
