@@ -5,7 +5,7 @@ import ProductCard from "../generic-component/card/ProductCard.jsx";
 import FilterBar from "../generic-component/card/FilterBar.jsx";
 import { endpoints, fetchData } from "../../api/apiMethod.js";
 
-export const Identifier = ({}) => {
+export const Identifier = () => {
   const { slug } = useParams();
   const [categoryData, setCategoryData] = useState([]);
 

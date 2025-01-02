@@ -37,7 +37,7 @@ const GiftSlider = () => {
         ))}
       </Slider>
       {/* Custom CSS for arrows */}
-      <style jsx>{`
+      <style>{`
         .slick-prev {
           left: 10px; /* Position left */
           z-index: 1;

@@ -26,7 +26,7 @@ export const NavNotification = () => {
         less than the price you found *
       </Typography>
 
-      <style jsx>{`
+      <style>{`
         @keyframes marquee {
           0% {
             transform: translateX(100%); // Start off-screen right

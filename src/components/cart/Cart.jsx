@@ -14,11 +14,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { addToCart } from "../generic-component/helper-function/cart";
 import Payment from "./Payment";
+import { setCount } from "../../redux/slice/countSlice";
+import { useDispatch } from "react-redux";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [reloadFlag, setReloadFlag] = useState(false);
   const [openPaymentdialog, setOpenPaymentdialog] = useState(false);
+  const dispatch = useDispatch();
 
   const getInitializeCart = () => {
     const rawCart = localStorage.getItem("cart");
@@ -45,11 +48,13 @@ const Cart = () => {
   const handleValueDecrease = async (item) => {
     await addToCart(item, false);
     setReloadFlag(true);
+    dispatch(setCount(true));
   };
 
   const handleValueIncrease = async (item) => {
     await addToCart(item, true);
     setReloadFlag(true);
+    dispatch(setCount(true));
   };
 
   const handleDeleteProduct = (item) => {
@@ -58,6 +63,7 @@ const Cart = () => {
     );
     localStorage.setItem("cart", JSON.stringify(filteredCart));
     setReloadFlag(true);
+    dispatch(setCount(true));
   };
 
   const handlePayment = () => {

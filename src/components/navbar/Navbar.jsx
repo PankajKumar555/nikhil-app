@@ -16,15 +16,23 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Autocomplete, TextField } from "@mui/material";
 import { endpoints, fetchData } from "../../api/apiMethod";
 import LoginPopup from "../login/LoginPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCount, setCount } from "../../redux/slice/countSlice";
 
-export default function Navbar() {
+export default function Navbar({ setReloadIsLoggedIn }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [optionList, setOptionList] = React.useState([]);
+  const [reloadDropDown, setReloadDropDown] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState("");
+  const [countValue, setCountValue] = React.useState(null);
   const route = useNavigate();
+  const countreloadObject = useSelector(selectCount); // Access the orderId from Redux
+  const countreloadFlag = countreloadObject?.count; // Access the orderId from Redux
+  const dispatch = useDispatch();
 
   const uniqueKeyOptions = optionList?.map((item, index) => ({
     id: index,
@@ -47,6 +55,20 @@ export default function Navbar() {
       loadSearchData();
     }
   }, [inputValue]);
+
+  React.useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isAlreadyLogin");
+    setIsLoggedIn(isLoggedIn);
+    setReloadDropDown(false);
+    setReloadIsLoggedIn(true);
+  }, [reloadDropDown]);
+
+  React.useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const totalCount = cart?.reduce((sum, obj) => sum + (obj.count || 0), 0);
+    setCountValue(totalCount);
+    dispatch(setCount(false));
+  }, [countreloadFlag]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -82,6 +104,13 @@ export default function Navbar() {
     setOpenLogin(true);
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("isAlreadyLogin");
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    setReloadDropDown(true);
+    route("/");
   };
   const handleAdmin = () => {
     route("/admin");
@@ -142,11 +171,25 @@ export default function Navbar() {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <MenuItem onClick={handleLogin} sx={{ width: "10rem" }}>
-        Login
-      </MenuItem>
-      <MenuItem onClick={handleAdmin}>Admin</MenuItem>
-      <MenuItem onClick={handleProfile}>Profile</MenuItem>
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
+          Logout
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={handleLogin} sx={{ width: "10rem" }}>
+          Login
+        </MenuItem>
+      )}
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleAdmin}>Admin</MenuItem>
+      ) : (
+        ""
+      )}
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
+      ) : (
+        ""
+      )}
     </Menu>
   );
 
@@ -164,32 +207,44 @@ export default function Navbar() {
         vertical: "top",
         horizontal: "right",
       }}
+      sx={{
+        top: "70px",
+        left: "10px",
+      }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleNavigateCart}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={countValue} color="error">
             <ShoppingCartIcon />
           </Badge>
-        </IconButton>
+        </IconButton>{" "}
+        &nbsp; &nbsp; Cart
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
+          Logout
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={handleLogin} sx={{ width: "10rem" }}>
+          Login
+        </MenuItem>
+      )}
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleAdmin}>Admin</MenuItem>
+      ) : (
+        ""
+      )}
+      {isLoggedIn === "true" ? (
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
+      ) : (
+        ""
+      )}
     </Menu>
   );
 
@@ -286,7 +341,7 @@ export default function Navbar() {
               color="inherit"
               onClick={handleNavigateCart}
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={countValue} color="error">
                 <ShoppingCartIcon sx={{ color: "#000" }} />
               </Badge>
             </IconButton>
@@ -318,7 +373,11 @@ export default function Navbar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <LoginPopup open={openLogin} setOpen={setOpenLogin} />
+      <LoginPopup
+        open={openLogin}
+        setOpen={setOpenLogin}
+        setReloadDropDown={setReloadDropDown}
+      />
     </Box>
   );
 }

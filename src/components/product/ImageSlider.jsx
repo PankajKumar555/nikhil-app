@@ -15,6 +15,8 @@ import {
   addToCart,
   checkIfAvailable,
 } from "../generic-component/helper-function/cart";
+import { useDispatch } from "react-redux";
+import { setCount } from "../../redux/slice/countSlice";
 
 const ImageSlider = ({ productDetails }) => {
   const [nav1, setNav1] = useState(null);
@@ -23,6 +25,7 @@ const ImageSlider = ({ productDetails }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isClicked, setIsClicked] = React.useState(false);
   const [value, setValue] = React.useState(1);
+  const dispatch = useDispatch();
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
@@ -65,8 +68,10 @@ const ImageSlider = ({ productDetails }) => {
     if (countJson?.count && countJson?.count > 0) {
       setValue(countJson.count);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 
@@ -76,8 +81,10 @@ const ImageSlider = ({ productDetails }) => {
     if (countJson?.count && countJson?.count > 0) {
       setValue(value - 1);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 
@@ -87,8 +94,10 @@ const ImageSlider = ({ productDetails }) => {
     if (countJson?.count && countJson?.count > 0) {
       setValue(value + 1);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 

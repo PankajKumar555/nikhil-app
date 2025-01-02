@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import NavBar from "./components/navbar/Navbar";
-import "react-toastify/dist/ReactToastify.css";
 import { Body } from "./components/body/Body";
-import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { First } from "./components/categories/first";
 import { Product } from "./components/product/Product";
-import "./App.css";
-import Login from "./components/login/Login";
 import { Footer } from "./components/footer/Footer";
 import AboutUs from "./components/about-us/About";
 import PrivacyPolicy from "./components/privacy-policy/PrivacyPolicy";
@@ -21,35 +18,36 @@ import ShippingPolicy from "./components/shipping-policy/ShippingPolicy";
 import Help from "./components/help/Help";
 import Cart from "./components/cart/Cart";
 import { NavNotification } from "./components/generic-component/nav-notification/NavNotification";
-import AddCategory from "./components/admin/add-category/AddCategory";
 import Admin from "./components/admin/Admin";
-import ViewCategories from "./components/admin/view-category/ViewCategories";
-import ViewProducts from "./components/admin/view-products/ViewProducts";
-import AllOrders from "./components/admin/pending-order/AllOrders";
-import { fetchData } from "./api/apiMethod";
-import { Identifier } from "./components/categories/Identifier";
 import ProfilePage from "./components/generic-component/profile/Profile";
 import ThankYouPage from "./components/cart/ThankYou";
-
-// import Cart from "./components/cart/Cart";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
+import ProtectedRoute from "./components/generic-component/404/protectedRoute";
+import NotFoundPage from "./components/generic-component/404/404";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
-  const location = useLocation(); // Get the current location
-
-  // Check if the current path is one of the admin paths
+  const location = useLocation();
   const isAdminPage = location.pathname.startsWith("/admin");
+  const is404Page = location.pathname === "/404";
+  const [isLoggedIn, setIsLoggedIn] = React.useState("");
+  const [reloadIsLoggedIn, setReloadIsLoggedIn] = React.useState(false);
 
-  // Fetch data based on the slug when the component mounts
+  React.useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isAlreadyLogin");
+    setIsLoggedIn(isLoggedIn);
+    setReloadIsLoggedIn(false);
+  }, [reloadIsLoggedIn]);
 
   return (
     <div className="App">
       <ScrollToTop />
-      {!isAdminPage && <NavNotification />}
-      {!isAdminPage && <NavBar />}
+      {!isAdminPage && !is404Page && <NavNotification />}
+      {!isAdminPage && !is404Page && (
+        <NavBar setReloadIsLoggedIn={setReloadIsLoggedIn} />
+      )}
       <Routes>
         <Route path="/" element={<Body />} />
-        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/categories/:slug" element={<First />} />
         <Route path="/identifier/:slug" element={<First />} />
         <Route path="/categories/:slug/products/:slug" element={<Product />} />
@@ -66,10 +64,27 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/help" element={<Help />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/thank-you" element={<ThankYouPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      {!isAdminPage && <Footer />}
+      {!isAdminPage && !is404Page && <Footer />}
     </div>
   );
 }

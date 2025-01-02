@@ -16,20 +16,20 @@ export const Footer = () => {
 
   return (
     <div>
-      <div class="footer-container">
+      <div className="footer-container">
         <Divider />
-        <div class="footer">
-          <div class="footer-content">
-            <div class="newsletter">
+        <div className="footer">
+          <div className="footer-content">
+            <div className="newsletter">
               <h2>Subscribe to Our Newsletter</h2>
-              <div class="newsletter-form">
-                <input class="newsletter-input" placeholder="Email here" />
-                <button class="newsletter-btn">Submit</button>
+              <div className="newsletter-form">
+                <input className="newsletter-input" placeholder="Email here" />
+                <button className="newsletter-btn">Submit</button>
               </div>
             </div>
-            <div class="footer-row">
-              <div class="footer-column">
-                <div class="footer-links">
+            <div className="footer-row">
+              <div className="footer-column">
+                <div className="footer-links">
                   <h3>Useful Links</h3>
                   <p onClick={() => handleNavigate("/")}>Home</p>
                   <p onClick={() => handleNavigate("/about-us")}>About</p>
@@ -45,8 +45,8 @@ export const Footer = () => {
                   </p>
                 </div>
               </div>
-              <div class="footer-column">
-                <div class="footer-links">
+              <div className="footer-column">
+                <div className="footer-links">
                   <h3>Service Area</h3>
                   <p onClick={() => handleNavigate("terms-of-use")}>
                     Rice Milling Technology Solutions
@@ -59,21 +59,21 @@ export const Footer = () => {
                   </p>
                 </div>
               </div>
-              <div class="footer-column">
-                <div class="footer-contact">
+              <div className="footer-column">
+                <div className="footer-contact">
                   <h3>Get In Touch</h3>
                   <p>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i> Delhi,
-                    India
+                    <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                    Delhi, India
                   </p>
                   <p>
-                    <i class="fa fa-phone" aria-hidden="true"></i> +91
+                    <i className="fa fa-phone" aria-hidden="true"></i> +91
                     8008146642
                   </p>
                   <p>
-                    <i class="fa fa-envelope"></i> abcd@example.com
+                    <i className="fa fa-envelope"></i> abcd@example.com
                   </p>
-                  <div class="footer-social">
+                  <div className="footer-social">
                     <a href="https://www.twitter.com/">
                       <XIcon />
                     </a>
@@ -91,8 +91,8 @@ export const Footer = () => {
               </div>
             </div>
           </div>
-          <div class="footer-menu">
-            <div class="f-menu">
+          <div className="footer-menu">
+            <div className="f-menu">
               <p onClick={() => handleNavigate("terms-of-use")}>Terms of Use</p>
               <p onClick={() => handleNavigate("/privacy-policy")}>
                 Privacy Policy
@@ -107,7 +107,7 @@ export const Footer = () => {
               <p onClick={() => handleNavigate("faq")}>FAQs</p>
             </div>
           </div>
-          <div class="footer-copyright">
+          <div className="footer-copyright">
             <p>&copy; Shubhilsha Trading, All Rights Reserved.</p>
           </div>
         </div>

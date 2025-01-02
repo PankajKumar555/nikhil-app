@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function LoginPopup({ open, setOpen }) {
+function LoginPopup({ open, setOpen, setReloadDropDown }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [value, setValue] = useState("");
   const [otp, setOtp] = useState("");
@@ -68,14 +68,15 @@ function LoginPopup({ open, setOpen }) {
 
   // Login logic (with email or phone and password)
   const handleLoginSubmit = () => {
-    if (!password) {
+    if (!password === "admin" && !value === "nikhil@gmail.com") {
       setError("Please enter your password.");
       return;
     }
-
     console.log("Logging in with:", value, password);
+    localStorage.setItem("isAlreadyLogin", "true");
     alert("Login successful!");
     setOpen(false); // Close the dialog
+    setReloadDropDown(true);
   };
 
   // Sign Up validation and logic
@@ -133,7 +134,8 @@ function LoginPopup({ open, setOpen }) {
     <Dialog
       open={open}
       onClose={() => setOpen(false)}
-      fullWidth="sm"
+      fullWidth
+      maxWidth="sm"
       sx={{
         maxWidth: "33rem", // Set max width to 33rem
         margin: "auto", // Center the dialog horizontally

@@ -9,11 +9,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router";
 import { currencySymbol } from "../helper-function/HelperFunction";
 import { addToCart, checkIfAvailable } from "../helper-function/cart";
+import { useDispatch } from "react-redux";
+import { setCount } from "../../../redux/slice/countSlice";
 
 export default function ProductCard({ data }) {
   const route = useNavigate();
   const [isClicked, setIsClicked] = React.useState(false);
   const [value, setValue] = React.useState(1);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     const fetchCounts = async () => {
@@ -39,8 +42,10 @@ export default function ProductCard({ data }) {
     if (countJson?.count && countJson?.count > 0) {
       setValue(countJson.count);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 
@@ -50,8 +55,10 @@ export default function ProductCard({ data }) {
     if (countJson?.count && countJson?.count > 0) {
       setValue(value - 1);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 
@@ -61,8 +68,10 @@ export default function ProductCard({ data }) {
     if (countJson?.count && countJson?.count > 0) {
       setValue(value + 1);
       setIsClicked(true);
+      dispatch(setCount(true));
     } else {
       setIsClicked(false);
+      dispatch(setCount(true));
     }
   };
 
