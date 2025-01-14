@@ -63,7 +63,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
       };
       getCartDetails();
     }
-  }, [openPaymentdialog]);
+  }, [openPaymentdialog, cart, dispatch]);
 
   React.useEffect(() => {
     if (orderCartId) {

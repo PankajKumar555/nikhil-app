@@ -62,7 +62,7 @@ export const GenericProductPage = () => {
       }
     };
     loadCategoryData();
-  }, [dynamicSlug]);
+  }, [dynamicSlug, location.pathname]);
 
   React.useEffect(() => {
     const loadChildCategoryData = async () => {

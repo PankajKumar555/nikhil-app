@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box, Button, CardActionArea } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router";
@@ -34,7 +34,7 @@ export default function ProductCard({ data }) {
     };
 
     fetchCounts();
-  }, [value]);
+  }, [value, data?.productId]);
 
   const handleClickButton = async (e) => {
     e.stopPropagation();

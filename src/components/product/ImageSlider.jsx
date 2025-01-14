@@ -179,7 +179,9 @@ const ImageSlider = ({ productDetails }) => {
             {productDetails?.productTitle}
           </Typography>
           <Typography variant="body1" sx={{ margin: "0.5rem 0px" }}>
-            <a href="#">{productDetails?.productCatName}</a>
+            {/* <a href="#"> */}
+            {productDetails?.productCatName}
+            {/* </a> */}
           </Typography>
           <br />
           <Box

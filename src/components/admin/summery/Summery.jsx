@@ -1,9 +1,8 @@
 import React from "react";
-import { Grid, Paper, Typography, Icon, Box, Card } from "@mui/material";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney"; // Total Revenue
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // Total Orders
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard"; // Total Deals
-// import TargetIcon from "@mui/icons-material/Target"; // Total Target
+import { Grid, Paper, Typography, Box } from "@mui/material";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 const Summary = () => {

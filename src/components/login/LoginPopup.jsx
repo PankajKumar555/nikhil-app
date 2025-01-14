@@ -85,26 +85,26 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
   };
 
   // Sign Up validation and logic
-  const handleSignUp = () => {
-    if (!username || !password || !confirmPassword) {
-      setError("All fields are required for sign up.");
-      return;
-    }
+  // const handleSignUp = () => {
+  //   if (!username || !password || !confirmPassword) {
+  //     setError("All fields are required for sign up.");
+  //     return;
+  //   }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
+  //   if (password !== confirmPassword) {
+  //     setError("Passwords do not match.");
+  //     return;
+  //   }
 
-    if (!isValidEmail(value) && !isValidPhone(value)) {
-      setError("Please enter a valid email or phone number.");
-      return;
-    }
+  //   if (!isValidEmail(value) && !isValidPhone(value)) {
+  //     setError("Please enter a valid email or phone number.");
+  //     return;
+  //   }
 
-    // Simulate sign-up logic
-    alert("Sign up successful!");
-    setIsSignUp(false); // Switch back to login
-  };
+  //   // Simulate sign-up logic
+  //   alert("Sign up successful!");
+  //   setIsSignUp(false); // Switch back to login
+  // };
 
   // Input validation (for both email and phone)
   const validateInput = (input) => {

@@ -21,6 +21,7 @@ function ProfilePage() {
   const [email, setEmail] = useState("john.doe@example.com");
   const [phone, setPhone] = useState("1234567890");
   const [address, setAddress] = useState("123 Main St, Springfield");
+  console.log("address", address);
   const [addresses, setAddresses] = useState([
     "123 Main St, Springfield",
     "456 Oak Ave, Rivertown",

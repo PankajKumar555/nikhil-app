@@ -61,14 +61,14 @@ export default function Navbar({ setReloadIsLoggedIn }) {
     setIsLoggedIn(isLoggedIn);
     setReloadDropDown(false);
     setReloadIsLoggedIn(true);
-  }, [reloadDropDown]);
+  }, [reloadDropDown, setReloadIsLoggedIn]);
 
   React.useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart"));
     const totalCount = cart?.reduce((sum, obj) => sum + (obj.count || 0), 0);
     setCountValue(totalCount);
     dispatch(setCount(false));
-  }, [countreloadFlag]);
+  }, [countreloadFlag, dispatch]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

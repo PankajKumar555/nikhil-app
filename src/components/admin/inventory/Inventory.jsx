@@ -19,11 +19,6 @@ import CreateOrderDialog from "../recent-orders/CreateOrder";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "../generic-component/confirm-dialog/ConfirmDialog";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney"; // Total Revenue
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // Total Orders
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard"; // Total Deals
-// import TargetIcon from "@mui/icons-material/Target"; // Total Target
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
