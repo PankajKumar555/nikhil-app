@@ -12,7 +12,7 @@ import {
 const AboutUs = () => {
   return (
     <Container maxWidth="lg" sx={{ padding: "2rem" }}>
-      <Typography variant="h2" align="center" gutterBottom>
+      <Typography variant="h4" align="center" gutterBottom>
         About Us
       </Typography>
       <Typography variant="h6" align="center" paragraph>

@@ -29,7 +29,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
   const [reloadDropDown, setReloadDropDown] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState("");
   const [countValue, setCountValue] = React.useState(null);
-  const route = useNavigate();
+  const navigate = useNavigate();
   const countreloadObject = useSelector(selectCount); // Access the orderId from Redux
   const countreloadFlag = countreloadObject?.count; // Access the orderId from Redux
   const dispatch = useDispatch();
@@ -98,7 +98,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
     setOpen(false);
   };
   const handleNavigateToHome = () => {
-    route("/");
+    navigate("/");
   };
   const handleLogin = () => {
     setOpenLogin(true);
@@ -110,28 +110,30 @@ export default function Navbar({ setReloadIsLoggedIn }) {
     setAnchorEl(null);
     handleMobileMenuClose();
     setReloadDropDown(true);
-    route("/");
+    navigate("/");
   };
   const handleAdmin = () => {
-    route("/admin");
+    navigate("/admin");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
   const handleProfile = () => {
-    route("/profile");
+    navigate("/profile");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
   const handleNavigateCart = () => {
-    route("/cart");
+    navigate("/cart");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
   const handleSelectedSearchService = (serviceName) => {
-    route(`/products/productName/${serviceName}`);
+    navigate(`/products/productName/${serviceName}`, {
+      state: { categoryName: serviceName },
+    });
   };
 
   const menuId = "primary-search-account-menu";
@@ -212,6 +214,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
       sx={{
         top: "70px",
         left: "10px",
+        width: "15rem",
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -323,7 +326,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
               </Box>
             )}
             sx={{
-              width: "35%",
+              width: { xs: "100%", sm: "35%" },
               "& .MuiOutlinedInput-root": {
                 borderRadius: "20rem",
               },

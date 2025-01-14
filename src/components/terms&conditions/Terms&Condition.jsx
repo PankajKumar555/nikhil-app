@@ -15,14 +15,14 @@ const TermsAndConditions = () => {
     <Container
       maxWidth="lg"
       sx={{
-        padding: "3rem",
+        padding: { xs: "1rem", sm: "2rem" },
         backgroundColor: "white",
         marginTop: "2rem",
         borderRadius: "8px",
       }}
     >
       <Typography
-        variant="h2"
+        variant="h4"
         align="center"
         gutterBottom
         sx={{ fontWeight: "bold", color: "#333" }}

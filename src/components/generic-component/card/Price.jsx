@@ -19,7 +19,11 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
 
   const handleMinChange = (event) => {
     const newMin = event.target.value;
-    setPriceRange((prev) => ({ ...prev, min: newMin }));
+    if (newMin < maxPrice) {
+      setPriceRange((prev) => ({ ...prev, min: newMin }));
+    } else {
+      alert("You can't choose min price greater than max price.");
+    }
   };
 
   const handleMaxChange = (event) => {
@@ -96,6 +100,14 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
                 onChange={handleMinChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Min Price" }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      width: "125px", // Set the width of the dropdown
+                      left: "245px !important",
+                    },
+                  },
+                }}
               >
                 <MenuItem value="">
                   <em>Min</em>
@@ -112,6 +124,14 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
                 onChange={handleMaxChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Max Price" }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      width: "125px", // Set the width of the dropdown
+                      left: "382px !important",
+                    },
+                  },
+                }}
               >
                 <MenuItem value="">
                   <em>Max</em>

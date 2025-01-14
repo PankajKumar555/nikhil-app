@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "./components/navbar/Navbar";
 import { Body } from "./components/body/Body";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { First } from "./components/categories/first";
+import { GenericProductPage } from "./components/categories/GenericProductPage";
 import { Product } from "./components/product/Product";
 import { Footer } from "./components/footer/Footer";
 import AboutUs from "./components/about-us/About";
@@ -48,11 +48,14 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Body />} />
-        <Route path="/categories/:slug" element={<First />} />
-        <Route path="/identifier/:slug" element={<First />} />
+        <Route path="/categories/:slug" element={<GenericProductPage />} />
+        <Route path="/identifier/:slug" element={<GenericProductPage />} />
         <Route path="/categories/:slug/products/:slug" element={<Product />} />
-        <Route path="/all-products" element={<First />} />
-        <Route path="/products/productName/:slug" element={<First />} />
+        <Route path="/all-products" element={<GenericProductPage />} />
+        <Route
+          path="/products/productName/:slug"
+          element={<GenericProductPage />}
+        />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-condition" element={<TermsAndConditions />} />

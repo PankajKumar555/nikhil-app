@@ -22,7 +22,7 @@ export const UpIcon = () => {
         height: "3rem",
         zIndex: 1000,
         borderRadius: "100%",
-        display: { xs: "none", sm: "flex" },
+        // display: { xs: "none", sm: "flex" },
         justifyContent: "center",
         alignItems: "center",
         boxShadow: "1px 1px 4px 1px rgba(0, 0, 0, 0.2)",

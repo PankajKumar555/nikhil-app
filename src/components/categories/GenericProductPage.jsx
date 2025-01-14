@@ -7,10 +7,12 @@ import { endpoints, fetchData } from "../../api/apiMethod.js";
 import CloseIcon from "@mui/icons-material/Close";
 import { currencySymbol } from "../generic-component/helper-function/HelperFunction.js";
 import { UpIcon } from "../generic-component/up-icon/UpIcon.jsx";
+import "./index.css";
 
-export const First = () => {
+export const GenericProductPage = () => {
   const { slug } = useParams();
   const location = useLocation();
+  const categoryName = location?.state?.categoryName;
   const [dynamicSlug, setDynamicSlug] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -20,6 +22,7 @@ export const First = () => {
   const [chlidCategoryName, setChlidCategoryName] = useState("");
   const [selectedCheckBox, setSelectedCheckBox] = useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [selectedSort, setSelectedSort] = React.useState("none");
   const [selectedOption, setSelectedOption] = React.useState("");
 
   useEffect(() => {
@@ -117,6 +120,7 @@ export const First = () => {
       sortedData = filteredData;
     }
     setFilteredData(sortedData);
+    setSelectedSort(type);
   };
 
   const handleRemoveFilter = () => {
@@ -127,16 +131,26 @@ export const First = () => {
     setChlidCategoryName("");
     setDynamicSlug(slug);
     setSelectedCategory(null);
+    setSelectedSort(null);
   };
 
   return (
     <div>
       <Grid container item xs={11} sm={11} md={11} lg={11} margin="auto">
-        <Typography variant="h4" sx={{ margin: "2rem" }}>
-          First
+        <Typography
+          variant="h4"
+          sx={{ margin: "2rem 0rem" }}
+          className="categories-page-heading"
+        >
+          {categoryName}
         </Typography>
       </Grid>
-      <Box sx={{ background: "#f3f3f3", padding: "1rem" }}>
+      <Box
+        sx={{
+          background: "#f3f3f3",
+          width: "100%",
+        }}
+      >
         <Grid container item md={11} sx={{ margin: "auto" }}>
           <FilterBar
             selectedCheckBox={setSelectedCheckBox}
@@ -151,8 +165,17 @@ export const First = () => {
             setSelectedCategory={setSelectedCategory}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            selectedSort={selectedSort}
           />
         </Grid>
+      </Box>
+      <Box
+        sx={{
+          background: "#fff",
+          // background: "#f3f3f3",
+          padding: { xs: "4px", sm: "1rem" },
+        }}
+      >
         <Grid container item md={11} sx={{ margin: "auto" }}>
           <Box
             sx={{
@@ -231,7 +254,33 @@ export const First = () => {
             ) : (
               ""
             )}
-            {priceRange?.min || selectedCheckBox || chlidCategoryName ? (
+            {selectedSort !== "none" && selectedSort ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  border: "1px solid gray",
+                  borderRadius: "5rem",
+                  padding: "4px 12px",
+                  cursor: "pointer",
+                  margin: "4px",
+                }}
+              >
+                Sort by: {selectedSort} &nbsp;
+                <CloseIcon
+                  sx={{ fontSize: "16px" }}
+                  onClick={() => {
+                    setSelectedSort(null);
+                    handleSort("none");
+                  }}
+                />
+              </Typography>
+            ) : (
+              ""
+            )}
+            {priceRange?.min ||
+            selectedCheckBox ||
+            chlidCategoryName ||
+            (selectedSort !== "none" && selectedSort) ? (
               <Typography
                 variant="body2"
                 sx={{
@@ -253,13 +302,13 @@ export const First = () => {
         <Grid container item md={11} sx={{ margin: "auto" }}>
           {loading ? (
             Array.from({ length: 8 }).map((_, i) => (
-              <Box key={i}>
+              <Box key={i} sx={{ margin: "auto" }}>
                 <Skeleton
                   variant="rectangular"
                   sx={{
                     margin: "0.5rem",
-                    width: "320px",
-                    height: "370px",
+                    width: { xs: "165px", sm: "320px" },
+                    height: { xs: "300px", sm: "370px" },
                   }}
                 />
               </Box>
@@ -269,7 +318,7 @@ export const First = () => {
               <Grid
                 key={index}
                 item
-                xs={12}
+                xs={6}
                 sm={6}
                 md={4}
                 lg={3}

@@ -26,7 +26,10 @@ const SideDrawer = ({ handleOpen, setClose }) => {
 
   const handleNavigate = (path) => {
     toggleDrawer();
-    navigate(path);
+    // navigate(path);
+    navigate(path, {
+      state: { categoryName: "All Products" },
+    });
   };
 
   const toggleSubMenu = (categoryId) => {

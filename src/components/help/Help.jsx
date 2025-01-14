@@ -109,8 +109,8 @@ const Help = () => {
             If you have any specific questions or require further assistance,
             please don't hesitate to reach out to us.
           </Typography>
-          <Button variant="contained" color="primary" href="/contact-support">
-            Contact Support
+          <Button variant="contained" color="success">
+            Contact : 9876542456
           </Button>
         </Box>
       </Box>

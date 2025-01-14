@@ -13,7 +13,10 @@ export const Body = () => {
 
   const handleNavigate = (item, index) => {
     if (item?.categoryId) {
-      navigate(`/categories/${item.categoryId}`);
+      // navigate(`/categories/${item.categoryId}`);
+      navigate(`/categories/${item.categoryId}`, {
+        state: { categoryName: item.categoryName },
+      });
     } else {
       console.log("No path defined for index:", index);
     }
@@ -34,7 +37,12 @@ export const Body = () => {
 
   return (
     <div>
-      <Box sx={{ background: "#f3f3f3", padding: "1rem" }}>
+      <Box
+        sx={{
+          background: "#f3f3f3",
+          padding: { xs: "1rem 4px", sm: "1rem" },
+        }}
+      >
         <GiftItemSlider />
         <Grid container item xs={11} sm={11} md={11} lg={11} margin="auto">
           <Typography variant="h4" sx={{ margin: "2rem 0px 2rem 0px" }}>
@@ -47,7 +55,7 @@ export const Body = () => {
                 <Grid
                   key={index}
                   item
-                  xs={12}
+                  xs={6}
                   sm={6}
                   md={4}
                   lg={3}

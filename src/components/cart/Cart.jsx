@@ -79,7 +79,7 @@ const Cart = () => {
               <Typography variant="h5">Cart ({cart?.length} items)</Typography>
               <Box
                 sx={{
-                  maxHeight: "35rem",
+                  maxHeight: { xs: "auto", sm: "35rem" },
                   overflow: "scroll",
                   "&::-webkit-scrollbar": {
                     display: "none",
@@ -108,9 +108,9 @@ const Cart = () => {
                           width: "100%",
                         }}
                       >
-                        <div
+                        <Box
                           style={{
-                            display: "flex",
+                            display: { xs: "block", sm: "flex" },
                             justifyContent: "space-between",
                             alignItems: "center",
                           }}
@@ -123,44 +123,80 @@ const Cart = () => {
                               {item?.sku}
                             </Typography>
                           </div>
-                          <div
-                            style={{
+                          <Box
+                            sx={{
                               display: "flex",
+                              justifyContent: "left",
                               alignItems: "center",
-                              border: "1px solid #8080809e",
-                              justifyContent: "center",
-                              borderRadius: "5px",
                             }}
                           >
                             <Box
-                              onClick={() => handleValueDecrease(item)}
                               sx={{
-                                cursor: "pointer",
                                 display: "flex",
-                                justifyContent: "center",
                                 alignItems: "center",
+                                border: "1px solid #8080809e",
+                                justifyContent: "center",
+                                borderRadius: "5px",
+                                width: "110px",
                               }}
                             >
-                              <RemoveIcon
-                                sx={{ fontSize: "16px", margin: "8px" }}
-                              />
+                              <Box
+                                onClick={() => handleValueDecrease(item)}
+                                sx={{
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <RemoveIcon
+                                  sx={{ fontSize: "16px", margin: "8px" }}
+                                />
+                              </Box>
+                              <Typography style={{ margin: "8px 16px" }}>
+                                {item?.count}
+                              </Typography>
+                              <Box
+                                onClick={() => handleValueIncrease(item)}
+                                sx={{ cursor: "pointer" }}
+                              >
+                                <AddIcon
+                                  sx={{ fontSize: "16px", margin: "8px" }}
+                                />
+                              </Box>
                             </Box>
-                            <Typography style={{ margin: "8px 16px" }}>
-                              {item?.count}
-                            </Typography>
-                            <Box
-                              onClick={() => handleValueIncrease(item)}
-                              sx={{ cursor: "pointer" }}
+                            {/* <Button
+                              variant="outlined"
+                              onClick={() => handleDeleteProduct(item)}
+                              sx={{
+                                textTransform: "capitalize",
+                                color: "black",
+                                fontSize: "12px",
+                                border: "1px solid #8080809e",
+                                display: { xs: "none", sm: "block" },
+                                "&:hover": {
+                                  border: "1px solid #8080809e",
+                                  background: "#8080809e",
+                                },
+                              }}
+                              startIcon={ */}
+
+                            <DeleteForeverIcon
+                              onClick={() => handleDeleteProduct(item)}
+                              sx={{
+                                fontSize: "20px !important",
+                                marginLeft: "1rem",
+                              }}
+                            />
+                            {/* }
                             >
-                              <AddIcon
-                                sx={{ fontSize: "16px", margin: "8px" }}
-                              />
-                            </Box>
-                          </div>
-                        </div>
-                        <div
+                              Remove
+                            </Button> */}
+                          </Box>
+                        </Box>
+                        <Box
                           style={{
-                            display: "flex",
+                            display: { xs: "block", sm: "flex" },
                             justifyContent: "space-between",
                             alignItems: "center",
                             marginTop: "0.5rem",
@@ -174,6 +210,7 @@ const Cart = () => {
                               color: "black",
                               fontSize: "12px",
                               border: "1px solid #8080809e",
+                              display: { xs: "none", sm: "block" },
                               "&:hover": {
                                 border: "1px solid #8080809e",
                                 background: "#8080809e",
@@ -190,13 +227,13 @@ const Cart = () => {
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "end",
+                              justifyContent: { xs: "start", sm: "end" },
                               alignItems: "center",
                             }}
                           >
                             <Typography
-                              style={{
-                                marginLeft: "auto",
+                              sx={{
+                                marginLeft: { xs: "unset", sm: "auto" },
                                 textDecoration: "line-through",
                                 color: "gray",
                               }}
@@ -206,13 +243,15 @@ const Cart = () => {
                             </Typography>
                             &nbsp; &nbsp;
                             <Typography
-                              style={{ marginLeft: "auto" }}
+                              sx={{
+                                marginLeft: { xs: "unset", sm: "auto" },
+                              }}
                               variant="body1"
                             >
                               {formatCurrency(item?.unitPrice * item?.count)}
                             </Typography>
                           </Box>
-                        </div>
+                        </Box>
                       </Box>
                     </CardContent>
                     <Divider />

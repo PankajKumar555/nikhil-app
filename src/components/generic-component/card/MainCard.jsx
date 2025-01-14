@@ -22,8 +22,8 @@ export default function MainCard({ url, heading }) {
         <Box
           sx={{
             overflow: "hidden",
-            height: "150px",
-            maxHeight: "150px",
+            height: { xs: "140px", sm: "200px" },
+            maxHeight: { xs: "140px", sm: "200px" },
           }}
         >
           <CardMedia
@@ -40,10 +40,22 @@ export default function MainCard({ url, heading }) {
             }}
           />
         </Box>
-        <CardContent sx={{ margin: "auto", textAlign: "center" }}>
-          <Typography variant="body2" color="text.secondary">
+        <CardContent
+          sx={{
+            margin: "auto",
+            textAlign: "center",
+            padding: { xs: "12px 4px", sm: "16px" },
+          }}
+        >
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textWrap: "nowrap", textOverflow: "ellipsis" }}
+          >
             {heading} &nbsp;
-            <KeyboardArrowRightIcon />
+            <KeyboardArrowRightIcon
+              sx={{ fontSize: { xs: "16px", sm: "20px" } }}
+            />
           </Typography>
         </CardContent>
       </CardActionArea>

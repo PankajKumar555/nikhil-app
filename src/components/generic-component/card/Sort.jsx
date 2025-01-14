@@ -3,12 +3,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, FormControl, InputBase, Select, Typography } from "@mui/material";
 import "./index.css";
 
-export default function Sort({ onSort }) {
-  const [value, setValue] = React.useState("none");
+export default function Sort({ onSort, selectedSort }) {
+  // const [value, setValue] = React.useState("none");
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   return (
     <Box
@@ -20,10 +20,10 @@ export default function Sort({ onSort }) {
     >
       <Typography variant="body1">Sort by :</Typography>
       <div>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <FormControl sx={{ m: 1 }}>
           <Select
-            value={value}
-            onChange={handleChange}
+            value={selectedSort}
+            // onChange={handleChange}
             inputProps={{ "aria-label": "Without label" }}
             input={
               <InputBase
@@ -32,6 +32,13 @@ export default function Sort({ onSort }) {
                 }}
               />
             }
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  width: "220px", // Set the width of the dropdown
+                },
+              },
+            }}
           >
             <MenuItem value="none" onClick={() => onSort("none")}>
               <em>None</em>

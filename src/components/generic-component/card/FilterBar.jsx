@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Box } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import "./index.css";
 import Availability from "./Availibility";
 import Price from "./Price";
 import Category from "./Category";
 import Sort from "./Sort";
+import FilterDrawerMobile from "./FilterDrawerMobile";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 export default function FilterBar({
   selectedCheckBox,
@@ -19,16 +21,18 @@ export default function FilterBar({
   setSelectedCategory,
   selectedOption,
   setSelectedOption,
+  selectedSort,
 }) {
+  const [open, setOpen] = React.useState(false);
   return (
     <>
       <Box
         sx={{
-          display: "flex",
+          display: { xs: "none", sm: "flex" },
           justifyContent: "space-between",
           alignItems: "center",
           width: "100%",
-          margin: "1rem auto 0.5rem",
+          margin: "0.5rem auto",
         }}
       >
         <Box
@@ -63,8 +67,35 @@ export default function FilterBar({
             alignItems: "center",
           }}
         >
-          <Sort onSort={onSort} />
+          <Sort onSort={onSort} selectedSort={selectedSort} />
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: "block", sm: "none" },
+        }}
+      >
+        <IconButton onClick={() => setOpen(true)}>
+          <FilterListIcon />
+          <Typography variant="body1"> &nbsp; Filter & Sort</Typography>
+        </IconButton>
+        <FilterDrawerMobile
+          handleOpen={open}
+          setClose={() => setOpen(false)}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+          selectedCheckBox={selectedCheckBox}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          setPriceRange={setPriceRange}
+          childCategoryData={childCategoryData}
+          setChlidCategoryId={setChlidCategoryId}
+          setChlidCategoryName={setChlidCategoryName}
+          setSelectedCategory={setSelectedCategory}
+          selectedCategory={selectedCategory}
+          onSort={onSort}
+          selectedSort={selectedSort}
+        />
       </Box>
     </>
   );

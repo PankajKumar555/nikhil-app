@@ -84,14 +84,14 @@ export default function ProductCard({ data }) {
     <Card
       sx={{
         borderRadius: "10px",
-        maxHeight: "25rem",
-        height: "25rem",
-        minHeight: "25rem",
-        minWidth: "250px",
+        maxHeight: { xs: "auto", sm: "25rem" },
+        height: { xs: "auto", sm: "25rem" },
+        minHeight: { xs: "auto", sm: "25rem" },
+        minWidth: { xs: "auto", sm: "250px" },
         boxShadow: "none",
         "&:hover": {
           boxShadow:
-            "0px 2px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)", // Prevent hover shadow
+            "2px 2px 2px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)", // Prevent hover shadow
         },
       }}
     >
@@ -118,7 +118,9 @@ export default function ProductCard({ data }) {
           alt={data?.imageList[0]?.productImgCaption ?? ""}
           sx={{
             transition: "transform 0.9s ease",
-            height: "14rem",
+            height: { xs: "auto", sm: "14rem" },
+            minHeight: { xs: "10rem", sm: "14rem" },
+            width: "-webkit-fill-available",
             objectFit: "contain",
             "&:hover": {
               transform: "scale(1.05)",
@@ -129,6 +131,8 @@ export default function ProductCard({ data }) {
       <CardContent
         sx={{
           cursor: "default !important",
+          padding: { xs: "8px", sm: "16px" },
+          paddingBottom: { xs: "8px !important", sm: "16px !important" },
         }}
       >
         <Box
@@ -151,51 +155,59 @@ export default function ProductCard({ data }) {
           >
             {data?.productTitle}
           </Typography>
-          {/* <Typography variant="body2" color="text.secondary" padding="5px 0px">
-            {data?.description}
-          </Typography> */}
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "block", sm: "flex" },
               justifyContent: "start",
               alignItems: "center",
               margin: "5px auto",
             }}
           >
-            <Typography
-              variant="body1"
-              color="text.secondary"
+            <Box
               sx={{
-                fontWeight: "bold",
-                color: "#000",
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
               }}
             >
-              {currencySymbol}&nbsp;
-              {data?.offerPrice}
-            </Typography>
-            &nbsp;&nbsp;
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{
-                textDecoration: "line-through",
-              }}
-            >
-              {currencySymbol}&nbsp;
-              {data?.listPrice}
-            </Typography>
-            &nbsp;&nbsp;
-            <Typography
-              variant="body1"
-              color="success.main"
-              sx={{
-                fontWeight: "bold",
-              }}
-            >
-              <span style={{ fontWeight: "500" }}>Save </span> {currencySymbol}
-              &nbsp;
-              {data?.listPrice - data?.offerPrice}
-            </Typography>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#000",
+                }}
+              >
+                {currencySymbol}&nbsp;
+                {data?.offerPrice}
+              </Typography>
+              &nbsp;&nbsp;
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  textDecoration: "line-through",
+                }}
+              >
+                {currencySymbol}&nbsp;
+                {data?.listPrice}
+              </Typography>
+              &nbsp;&nbsp;
+            </Box>
+            <Box>
+              <Typography
+                variant="body1"
+                color="success.main"
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                <span style={{ fontWeight: "500" }}>Save </span>{" "}
+                {currencySymbol}
+                &nbsp;
+                {data?.listPrice - data?.offerPrice}
+              </Typography>
+            </Box>
           </Box>
           <Box
             sx={{
@@ -225,7 +237,7 @@ export default function ProductCard({ data }) {
                 border: "1px solid #15741a",
                 borderRadius: "4px",
                 color: "#15741a",
-                padding: "6px 20px",
+                padding: { xs: "6px", sm: "6px 20px" },
               }}
             >
               <RemoveIcon
@@ -254,6 +266,7 @@ export default function ProductCard({ data }) {
                 border: "1px solid #15741a",
                 color: "#15741a",
                 boxShadow: "none",
+                cursor: data?.inStock ? "pointer" : "not-allowed",
               }}
               color="success"
               onClick={handleClickButton}

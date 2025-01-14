@@ -75,6 +75,9 @@ export default function Availability({
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
+          sx={{
+            width: "300px",
+          }}
         >
           <Typography
             variant="body2"

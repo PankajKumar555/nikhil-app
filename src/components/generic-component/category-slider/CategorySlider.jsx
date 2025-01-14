@@ -31,7 +31,10 @@ const GiftItemSlider = () => {
 
   const handleNavigate = (item, index) => {
     if (item?.identifierId) {
-      navigate(`/identifier/${item.identifierId}`);
+      // navigate(`/identifier/${item.identifierId}`);
+      navigate(`/identifier/${item.identifierId}`, {
+        state: { categoryName: item.identifierName },
+      });
     } else {
       console.log("No path defined for index:", index);
     }
@@ -48,7 +51,7 @@ const GiftItemSlider = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: { xs: "left", sm: "center" },
           overflow: "auto",
           alignItems: "center",
         }}

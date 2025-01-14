@@ -74,16 +74,32 @@ export const Footer = () => {
                     <i className="fa fa-envelope"></i> abcd@example.com
                   </p>
                   <div className="footer-social">
-                    <a href="https://www.twitter.com/">
+                    <a
+                      href="https://www.twitter.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <XIcon />
                     </a>
-                    <a href="https://www.facebook.com/">
+                    <a
+                      href="https://www.facebook.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <FacebookIcon />
                     </a>
-                    <a href="https://www.youtube.com/">
+                    <a
+                      href="https://www.youtube.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <YouTubeIcon />
                     </a>
-                    <a href="https://www.instagram.com/">
+                    <a
+                      href="https://www.instagram.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <InstagramIcon />
                     </a>
                   </div>
@@ -91,6 +107,7 @@ export const Footer = () => {
               </div>
             </div>
           </div>
+          <Divider />
           <div className="footer-menu">
             <div className="f-menu">
               <p onClick={() => handleNavigate("terms-of-use")}>Terms of Use</p>
@@ -107,6 +124,7 @@ export const Footer = () => {
               <p onClick={() => handleNavigate("faq")}>FAQs</p>
             </div>
           </div>
+          <Divider />
           <div className="footer-copyright">
             <p>&copy; Shubhilsha Trading, All Rights Reserved.</p>
           </div>
