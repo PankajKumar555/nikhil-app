@@ -131,8 +131,15 @@ const ImageSlider = ({ productDetails }) => {
 
   return (
     <>
-      <Grid container item md={11} lg={11} sx={{ margin: " 2rem auto" }}>
-        <Grid container item md={7} lg={7}>
+      <Grid
+        container
+        xs={11}
+        sm={11}
+        md={11}
+        lg={11}
+        sx={{ margin: " 2rem auto" }}
+      >
+        <Grid item xs={12} sm={12} md={7} lg={7}>
           <div className="slider-container">
             <div className="thumbnail-slider-container">
               <button className="slider-button" onClick={prevSlide}>
@@ -174,7 +181,20 @@ const ImageSlider = ({ productDetails }) => {
             </div>
           </div>
         </Grid>
-        <Grid container item md={5} lg={5} sx={{ display: "block" }}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={5}
+          lg={5}
+          sx={{
+            display: "block",
+            // marginTop: {
+            //   xs: productDetails?.imageList?.length > 1 ? "2rem" : "13rem",
+            //   sm: "0px",
+            // },
+          }}
+        >
           <Typography variant="h4" sx={{ margin: "0.5rem 0px" }}>
             {productDetails?.productTitle}
           </Typography>

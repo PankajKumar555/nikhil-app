@@ -36,6 +36,7 @@ export default function Sort({ onSort, selectedSort }) {
               PaperProps: {
                 sx: {
                   width: "220px", // Set the width of the dropdown
+                  backgroundColor: "#f3f3f3 !important",
                 },
               },
             }}

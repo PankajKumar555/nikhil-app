@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { currencySymbol } from "../generic-component/helper-function/HelperFunction.js";
 import { UpIcon } from "../generic-component/up-icon/UpIcon.jsx";
 import "./index.css";
+import { CheckoutButton } from "../admin/generic-component/confirm-dialog/CheckoutButton.jsx";
 
 export const GenericProductPage = () => {
   const { slug } = useParams();
@@ -337,6 +338,7 @@ export const GenericProductPage = () => {
           )}
         </Grid>
       </Box>
+      <CheckoutButton />
       <UpIcon />
     </div>
   );

@@ -84,10 +84,12 @@ export default function ProductCard({ data }) {
     <Card
       sx={{
         borderRadius: "10px",
-        maxHeight: { xs: "auto", sm: "25rem" },
         height: { xs: "auto", sm: "25rem" },
         minHeight: { xs: "auto", sm: "25rem" },
+        maxHeight: { xs: "auto", sm: "25rem" },
+        width: { xs: "auto", sm: "250px" },
         minWidth: { xs: "auto", sm: "250px" },
+        maxWidth: { xs: "auto", sm: "250px" },
         boxShadow: "none",
         "&:hover": {
           boxShadow:
@@ -118,7 +120,7 @@ export default function ProductCard({ data }) {
           alt={data?.imageList[0]?.productImgCaption ?? ""}
           sx={{
             transition: "transform 0.9s ease",
-            height: { xs: "auto", sm: "14rem" },
+            height: { xs: "12rem", sm: "14rem" },
             minHeight: { xs: "10rem", sm: "14rem" },
             width: "-webkit-fill-available",
             objectFit: "contain",

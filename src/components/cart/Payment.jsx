@@ -125,6 +125,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     handleSaveOrderDetails();
     console.log("Form Submitted Successfully:", formData);
     navigate("/thank-you");
+    // localStorage.removeItem("cart");
   };
 
   return (

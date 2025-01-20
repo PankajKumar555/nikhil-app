@@ -104,7 +104,7 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
                   PaperProps: {
                     sx: {
                       width: "125px", // Set the width of the dropdown
-                      left: "245px !important",
+                      // left: "230px !important",
                     },
                   },
                 }}
@@ -128,7 +128,7 @@ export default function Price({ minPrice, maxPrice, setPriceRange }) {
                   PaperProps: {
                     sx: {
                       width: "125px", // Set the width of the dropdown
-                      left: "382px !important",
+                      // left: "367px !important",
                     },
                   },
                 }}

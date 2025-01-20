@@ -4,6 +4,7 @@ import ImageSlider from "./ImageSlider";
 import { useParams } from "react-router";
 import { endpoints, fetchData } from "../../api/apiMethod";
 import { UpIcon } from "../generic-component/up-icon/UpIcon";
+import { CheckoutButton } from "../admin/generic-component/confirm-dialog/CheckoutButton";
 
 export const Product = () => {
   const { slug } = useParams();
@@ -28,6 +29,7 @@ export const Product = () => {
     <Box>
       <ImageSlider productDetails={productDetails} />
       <UpIcon />
+      <CheckoutButton />
     </Box>
   );
 };

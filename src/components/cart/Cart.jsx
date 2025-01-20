@@ -165,37 +165,18 @@ const Cart = () => {
                                 />
                               </Box>
                             </Box>
-                            {/* <Button
-                              variant="outlined"
-                              onClick={() => handleDeleteProduct(item)}
-                              sx={{
-                                textTransform: "capitalize",
-                                color: "black",
-                                fontSize: "12px",
-                                border: "1px solid #8080809e",
-                                display: { xs: "none", sm: "block" },
-                                "&:hover": {
-                                  border: "1px solid #8080809e",
-                                  background: "#8080809e",
-                                },
-                              }}
-                              startIcon={ */}
-
                             <DeleteForeverIcon
                               onClick={() => handleDeleteProduct(item)}
                               sx={{
                                 fontSize: "20px !important",
                                 marginLeft: "1rem",
+                                display: { xs: "block", sm: "none" },
                               }}
                             />
-                            {/* }
-                            >
-                              Remove
-                            </Button> */}
                           </Box>
                         </Box>
                         <Box
-                          style={{
+                          sx={{
                             display: { xs: "block", sm: "flex" },
                             justifyContent: "space-between",
                             alignItems: "center",
@@ -210,7 +191,7 @@ const Cart = () => {
                               color: "black",
                               fontSize: "12px",
                               border: "1px solid #8080809e",
-                              display: { xs: "none", sm: "block" },
+                              display: { xs: "none", sm: "flex" },
                               "&:hover": {
                                 border: "1px solid #8080809e",
                                 background: "#8080809e",

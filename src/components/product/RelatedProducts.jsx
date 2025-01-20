@@ -41,9 +41,9 @@ export const RelatedProducts = ({ productDetails }) => {
           }}
         >
           {relatedProducts?.list?.map((data, index) => (
-            <Grid key={index} item sx={{ margin: "auto", padding: "0.5rem" }}>
+            <Box key={index} item sx={{ margin: "auto", padding: "0.5rem" }}>
               <ProductCard data={data} />
-            </Grid>
+            </Box>
           ))}
         </Box>
       </Box>
