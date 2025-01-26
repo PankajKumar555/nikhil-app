@@ -24,11 +24,11 @@ const SideDrawer = ({ handleOpen, setClose }) => {
     setClose(false);
   };
 
-  const handleNavigate = (path) => {
+  const handleNavigate = (path, name) => {
     toggleDrawer();
     // navigate(path);
     navigate(path, {
-      state: { categoryName: "All Products" },
+      state: { categoryName: name },
     });
   };
 
@@ -55,7 +55,9 @@ const SideDrawer = ({ handleOpen, setClose }) => {
           <ListItem
             key={text}
             disablePadding
-            onClick={() => handleNavigate(index === 0 ? "/" : "all-products")}
+            onClick={() =>
+              handleNavigate(index === 0 ? "/" : "all-products", "All products")
+            }
           >
             <ListItemButton>
               <ListItemText primary={text} />
@@ -90,7 +92,10 @@ const SideDrawer = ({ handleOpen, setClose }) => {
                     }}
                     button
                     onClick={() =>
-                      handleNavigate(`/categories/${item.categoryId}`)
+                      handleNavigate(
+                        `/categories/${item.categoryId}`,
+                        item?.categoryName
+                      )
                     }
                   >
                     <ListItemText primary={item.categoryName} sx={{ pl: 4 }} />
@@ -131,7 +136,8 @@ const SideDrawer = ({ handleOpen, setClose }) => {
                             button
                             onClick={() =>
                               handleNavigate(
-                                `/categories/${subItem.categoryId}`
+                                `/categories/${subItem.categoryId}`,
+                                item?.categoryName
                               )
                             }
                           >
@@ -153,7 +159,9 @@ const SideDrawer = ({ handleOpen, setClose }) => {
           <ListItem
             key={text}
             disablePadding
-            onClick={() => handleNavigate(text.toLowerCase().replace(" ", "-"))}
+            onClick={() =>
+              handleNavigate(text.toLowerCase().replace(" ", "-"), "")
+            }
           >
             <ListItemButton>
               {index === 0 ? (

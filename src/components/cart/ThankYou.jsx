@@ -48,17 +48,17 @@ const ThankYouPage = () => {
   const router = useNavigate();
 
   React.useEffect(() => {
-    if (orderId) {
-      const getOrderDetails = async () => {
-        try {
-          const result = await fetchData(endpoints.getOrderDetails + orderId);
-          setOrderData(result?.data);
-        } catch (error) {
-          console.error("Error fetching category data:", error);
-        }
-      };
-      getOrderDetails(); // Call the async function
-    }
+    // if (orderId) {
+    const getOrderDetails = async () => {
+      try {
+        const result = await fetchData(endpoints.getOrderDetails + orderId);
+        setOrderData(result?.data);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+      }
+    };
+    getOrderDetails(); // Call the async function
+    // }
   }, [orderId]);
 
   const handleNavigateHome = () => {

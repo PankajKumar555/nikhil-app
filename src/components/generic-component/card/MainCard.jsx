@@ -34,6 +34,7 @@ export default function MainCard({ url, heading }) {
             sx={{
               objectFit: "contain",
               transition: "transform 0.9s ease",
+              height: "-webkit-fill-available",
               "&:hover": {
                 transform: "scale(1.05)",
               },

@@ -109,7 +109,7 @@ const ContactUs = () => {
             >
               <iframe
                 title="test"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109741.02912911311!2d76.69348873658222!3d30.73506264436677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fed0be66ec96b%3A0xa5ff67f9527319fe!2sChandigarh!5e0!3m2!1sen!2sin!4v1553497921355"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d17446.21974028572!2d77.0967352!3d28.7296738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d0126f8b739a9%3A0x489e7d8c3cc7fadb!2sRohini%2C%20New%20Delhi%2C%20Delhi%20110085%2C%20India!5e0!3m2!1sen!2sin!4v1674974567890"
                 width="100%"
                 height="450"
                 frameBorder="0"

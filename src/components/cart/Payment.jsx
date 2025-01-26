@@ -449,6 +449,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
             helperText={errors.gstin}
             InputLabelProps={{ shrink: true }}
             sx={{ flex: 1, margin: "4px auto" }}
+            required
           />
         </DialogContent>
         <DialogActions sx={{ margin: "0.5rem 0px" }}>

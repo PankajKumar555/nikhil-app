@@ -36,7 +36,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         1. Acceptance of Terms
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -46,7 +46,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         2. Products and Services
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -57,7 +57,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         3. Orders and Payments
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -76,7 +76,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         4. Shipping and Delivery
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -87,7 +87,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         5. Returns and Refunds
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -98,7 +98,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         6. User Accounts
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -109,7 +109,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         7. Limitation of Liability
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>
@@ -119,7 +119,7 @@ const TermsAndConditions = () => {
 
       <Divider sx={{ margin: "2rem 0" }} />
 
-      <Typography variant="h4" gutterBottom sx={{ color: "#1976d2" }}>
+      <Typography variant="h5" gutterBottom sx={{ color: "#000" }}>
         8. Changes to These Terms
       </Typography>
       <Typography paragraph sx={{ color: "#555" }}>

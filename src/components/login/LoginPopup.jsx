@@ -49,15 +49,17 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
 
   // Send OTP logic for signup
   const sendOtp = () => {
-    if (!validateInput(value)) {
-      setError(
-        "Please enter a valid email address or a 10-digit phone number."
-      );
-      return;
-    }
+    alert("This Service is not available right now.");
+    return;
+    // if (!validateInput(value)) {
+    //   setError(
+    //     "Please enter a valid email address or a 10-digit phone number."
+    //   );
+    //   return;
+    // }
 
-    console.log("Sending OTP to:", value);
-    setOtpSent(true); // Simulate OTP sending
+    // console.log("Sending OTP to:", value);
+    // setOtpSent(true); // Simulate OTP sending
   };
 
   // OTP validation logic for signup
@@ -73,15 +75,16 @@ function LoginPopup({ open, setOpen, setReloadDropDown }) {
 
   // Login logic (with email or phone and password)
   const handleLoginSubmit = () => {
-    if (!password === "admin" && !value === "nikhil@gmail.com") {
-      setError("Please enter your password.");
-      return;
+    if (password === "admin" && value === "nikhil@gmail.com") {
+      console.log("Logging in with:", value, password);
+      localStorage.setItem("isAlreadyLogin", "true");
+      alert("Login successful!");
+      setOpen(false); // Close the dialog
+      setReloadDropDown(true);
+    } else {
+      setError("Password or email is incorrect.");
+      alert("Password or email is incorrect!");
     }
-    console.log("Logging in with:", value, password);
-    localStorage.setItem("isAlreadyLogin", "true");
-    alert("Login successful!");
-    setOpen(false); // Close the dialog
-    setReloadDropDown(true);
   };
 
   // Sign Up validation and logic

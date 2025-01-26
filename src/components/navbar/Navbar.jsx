@@ -18,6 +18,7 @@ import { endpoints, fetchData } from "../../api/apiMethod";
 import LoginPopup from "../login/LoginPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCount, setCount } from "../../redux/slice/countSlice";
+import Logo from "../../assets/logo.png";
 
 export default function Navbar({ setReloadIsLoggedIn }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -277,7 +278,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             component="div"
@@ -292,7 +293,20 @@ export default function Navbar({ setReloadIsLoggedIn }) {
             onClick={handleNavigateToHome}
           >
             MUI
-          </Typography>
+          </Typography> */}
+          <Box>
+            <img
+              onClick={handleNavigateToHome}
+              src={Logo}
+              alt="Logo"
+              style={{
+                height: "4rem",
+                width: "auto",
+                borderRadius: "0.5rem",
+                cursor: "pointer",
+              }}
+            />
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Autocomplete
             freeSolo={true}

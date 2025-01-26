@@ -40,11 +40,17 @@ export const RelatedProducts = ({ productDetails }) => {
             scrollbarWidth: "none",
           }}
         >
-          {relatedProducts?.list?.map((data, index) => (
-            <Box key={index} item sx={{ margin: "auto", padding: "0.5rem" }}>
-              <ProductCard data={data} />
-            </Box>
-          ))}
+          {relatedProducts?.list?.length > 0
+            ? relatedProducts?.list?.map((data, index) => (
+                <Box
+                  key={index}
+                  item
+                  sx={{ margin: "auto", padding: "0.5rem" }}
+                >
+                  <ProductCard data={data} />
+                </Box>
+              ))
+            : "No Related Products Found"}
         </Box>
       </Box>
     </Box>

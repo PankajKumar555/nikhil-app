@@ -133,11 +133,11 @@ const ImageSlider = ({ productDetails }) => {
     <>
       <Grid
         container
-        xs={11}
-        sm={11}
-        md={11}
-        lg={11}
-        sx={{ margin: " 2rem auto" }}
+        // xs={11}
+        // sm={11}
+        // md={11}
+        // lg={11}
+        sx={{ margin: " 2rem auto", width: "90%", maxWidth: "90%" }}
       >
         <Grid item xs={12} sm={12} md={7} lg={7}>
           <div className="slider-container">
