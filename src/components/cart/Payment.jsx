@@ -14,6 +14,7 @@ import { setCartId } from "../../redux/slice/cartIdSlice";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { currencySymbol } from "../generic-component/helper-function/HelperFunction";
 import { setOrderId } from "../../redux/slice/orderIdSlice";
+import { Loader } from "../admin/generic-component/mian-loader/Loader";
 
 const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
   const [formData, setFormData] = React.useState({
@@ -29,6 +30,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
   const [errors, setErrors] = React.useState({});
   const [orderCartId, setOrderCartId] = React.useState();
   const [orderData, setOrderData] = React.useState();
+  const [loading, setLoading] = React.useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -96,18 +98,23 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     };
     try {
       const responce = await postData(endpoints.saveCartOrderDetails, payload);
-      dispatch(setOrderId(responce?.data)); // Save the cartId to the Redux store
+      if (responce?.data) {
+        dispatch(setOrderId(responce?.data)); // Save the cartId to the Redux store
+        setLoading(false);
+        navigate("/thank-you");
+      }
     } catch (error) {
       console.error("Error fetching category data:", error);
     }
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     // Validate required fields
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
+      if (!formData[key] && key !== "gstin") {
         newErrors[key] = `${key} is required`;
       }
     });
@@ -124,7 +131,6 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
     }
     handleSaveOrderDetails();
     console.log("Form Submitted Successfully:", formData);
-    navigate("/thank-you");
     // localStorage.removeItem("cart");
   };
 
@@ -445,11 +451,10 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
             name="gstin"
             value={formData.gstin}
             onChange={handleChange}
-            error={!!errors.gstin}
-            helperText={errors.gstin}
+            // error={!!errors.gstin}
+            // helperText={errors.gstin}
             InputLabelProps={{ shrink: true }}
             sx={{ flex: 1, margin: "4px auto" }}
-            required
           />
         </DialogContent>
         <DialogActions sx={{ margin: "0.5rem 0px" }}>
@@ -471,6 +476,7 @@ const Payment = ({ openPaymentdialog, handleClosePaymentDialog, cart }) => {
             </Button>
           </Box>
         </DialogActions>
+        {loading && <Loader />}
       </Dialog>
     </React.Fragment>
   );

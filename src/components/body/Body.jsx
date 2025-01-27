@@ -74,13 +74,13 @@ export const Body = () => {
                 </Grid>
               ))
             : Array.from({ length: 8 }).map((_, i) => (
-                <Box key={i}>
+                <Box key={i} sx={{ margin: "auto" }}>
                   <Skeleton
                     variant="rectangular"
                     sx={{
                       margin: "0.5rem",
-                      width: "320px",
-                      height: "320px",
+                      width: { xs: "165px", sm: "320px" },
+                      height: { xs: "300px", sm: "370px" },
                     }}
                   />
                 </Box>

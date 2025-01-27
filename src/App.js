@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/generic-component/404/protectedRoute";
 import NotFoundPage from "./components/generic-component/404/404";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { Box } from "@mui/material";
 
 function App() {
   const location = useLocation();
@@ -42,10 +43,20 @@ function App() {
   return (
     <div className="App">
       <ScrollToTop />
-      {!isAdminPage && !is404Page && <NavNotification />}
-      {!isAdminPage && !is404Page && (
-        <NavBar setReloadIsLoggedIn={setReloadIsLoggedIn} />
-      )}
+      <Box
+        sx={{
+          position: "sticky",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: "1000",
+        }}
+      >
+        {!isAdminPage && !is404Page && <NavNotification />}
+        {!isAdminPage && !is404Page && (
+          <NavBar setReloadIsLoggedIn={setReloadIsLoggedIn} />
+        )}
+      </Box>
       <Routes>
         <Route path="/" element={<Body />} />
         <Route path="/categories/:slug" element={<GenericProductPage />} />

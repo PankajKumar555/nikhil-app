@@ -122,11 +122,15 @@ const ImageSlider = ({ productDetails }) => {
   };
 
   const nextSlide = () => {
-    nav2.slickNext();
+    if (nav2) {
+      nav2.slickNext();
+    }
   };
 
   const prevSlide = () => {
-    nav2.slickPrev();
+    if (nav2) {
+      nav2.slickPrev();
+    }
   };
 
   return (
@@ -142,7 +146,11 @@ const ImageSlider = ({ productDetails }) => {
         <Grid item xs={12} sm={12} md={7} lg={7}>
           <div className="slider-container">
             <div className="thumbnail-slider-container">
-              <button className="slider-button" onClick={prevSlide}>
+              <button
+                className="slider-button"
+                onClick={prevSlide}
+                aria-label="Previous Slide"
+              >
                 <ArrowDropUpIcon />
               </button>
               <div className="thumbnail-slider">
@@ -159,7 +167,11 @@ const ImageSlider = ({ productDetails }) => {
                   ))}
                 </Slider>
               </div>
-              <button className="slider-button" onClick={nextSlide}>
+              <button
+                className="slider-button"
+                onClick={nextSlide}
+                aria-label="Next Slide"
+              >
                 <ArrowDropDownIcon />
               </button>
             </div>

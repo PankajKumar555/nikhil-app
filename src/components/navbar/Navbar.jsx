@@ -13,17 +13,25 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import SideDrawer from "../drawer/Drawer";
 import { useNavigate } from "react-router";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { endpoints, fetchData } from "../../api/apiMethod";
 import LoginPopup from "../login/LoginPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCount, setCount } from "../../redux/slice/countSlice";
 import Logo from "../../assets/logo.png";
+import SearchIcon from "@mui/icons-material/Search";
+import SearchBarMobileView from "./SearchBarMobileView";
 
 export default function Navbar({ setReloadIsLoggedIn }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [openSearchBar, setOpenSearchBar] = React.useState(false);
   const [openLogin, setOpenLogin] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [optionList, setOptionList] = React.useState([]);
@@ -34,6 +42,8 @@ export default function Navbar({ setReloadIsLoggedIn }) {
   const countreloadObject = useSelector(selectCount); // Access the orderId from Redux
   const countreloadFlag = countreloadObject?.count; // Access the orderId from Redux
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const uniqueKeyOptions = optionList?.map((item, index) => ({
     id: index,
@@ -135,6 +145,10 @@ export default function Navbar({ setReloadIsLoggedIn }) {
     navigate(`/products/productName/${serviceName}`, {
       state: { categoryName: serviceName },
     });
+  };
+
+  const handleSearchBarMobile = () => {
+    setOpenSearchBar(true);
   };
 
   const menuId = "primary-search-account-menu";
@@ -261,11 +275,12 @@ export default function Navbar({ setReloadIsLoggedIn }) {
         position="static"
         sx={{
           background: "#fff",
+          boxShadow: "0px 5px 10px -5px rgba(0,0,0,0.1)",
         }}
       >
         <Toolbar
           sx={{
-            minHeight: "90px !important",
+            minHeight: { xs: "70px !important", sm: "90px !important" },
           }}
         >
           <IconButton
@@ -276,7 +291,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
             sx={{ mr: 2 }}
             onClick={handleDrawer}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "#000" }} />
           </IconButton>
           {/* <Typography
             variant="h6"
@@ -300,7 +315,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
               src={Logo}
               alt="Logo"
               style={{
-                height: "4rem",
+                height: isSmallScreen ? "3rem" : "4rem",
                 width: "auto",
                 borderRadius: "0.5rem",
                 cursor: "pointer",
@@ -341,6 +356,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
             )}
             sx={{
               width: { xs: "100%", sm: "35%" },
+              display: { xs: "none", sm: "block" },
               "& .MuiOutlinedInput-root": {
                 borderRadius: "20rem",
               },
@@ -353,7 +369,18 @@ export default function Navbar({ setReloadIsLoggedIn }) {
             )}
           />
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "flex", md: "flex" } }}>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="search Items"
+              aria-haspopup="true"
+              onClick={handleSearchBarMobile}
+              color="inherit"
+              sx={{ display: { xs: "flex", sm: "none" } }}
+            >
+              <SearchIcon sx={{ color: "#000" }} />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -376,7 +403,7 @@ export default function Navbar({ setReloadIsLoggedIn }) {
               <AccountCircle sx={{ color: "#000" }} />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: "none", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -396,6 +423,10 @@ export default function Navbar({ setReloadIsLoggedIn }) {
         open={openLogin}
         setOpen={setOpenLogin}
         setReloadDropDown={setReloadDropDown}
+      />
+      <SearchBarMobileView
+        open={openSearchBar}
+        close={() => setOpenSearchBar(false)}
       />
     </Box>
   );
