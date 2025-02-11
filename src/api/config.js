@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an Axios instance
 const axiosInstance = axios.create({
   baseURL:
-    "http://ec2-13-127-203-136.ap-south-1.compute.amazonaws.com:8080/shubhekshaApi/", // Replace with your API base URL
+    "https://thewholesalestreet.com/shubhekshaApi/", // Replace with your API base URL
   timeout: 10000, // Optional: set a timeout for requests in ms
   headers: {
     "Content-Type": "application/json", // You can modify this based on your API requirements
